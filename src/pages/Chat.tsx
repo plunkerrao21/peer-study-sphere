@@ -1,7 +1,18 @@
 
 import React, { useState } from 'react';
 import AppLayout from '../components/layout/AppLayout';
-import { Send, Search, User } from 'lucide-react';
+import { Send, Search, User, UserPlus, Link as LinkIcon, X, CheckCheck } from 'lucide-react';
+import { useToast } from '@/hooks/use-toast';
+import { 
+  Dialog, 
+  DialogContent, 
+  DialogHeader, 
+  DialogTitle, 
+  DialogDescription,
+  DialogFooter
+} from '@/components/ui/dialog';
+import { Input } from '@/components/ui/input';
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 
 interface Contact {
   id: number;
@@ -19,9 +30,23 @@ interface Message {
   time: string;
 }
 
+interface UserSearchResult {
+  id: number;
+  name: string;
+  username: string;
+  avatar?: string;
+  isFriend: boolean;
+}
+
 const Chat = () => {
   const [message, setMessage] = useState('');
   const [activeContact, setActiveContact] = useState<number>(1);
+  const [searchDialogOpen, setSearchDialogOpen] = useState(false);
+  const [friendLinkDialogOpen, setFriendLinkDialogOpen] = useState(false);
+  const [searchQuery, setSearchQuery] = useState('');
+  const [searchResults, setSearchResults] = useState<UserSearchResult[]>([]);
+  const [friendLink, setFriendLink] = useState('');
+  const { toast } = useToast();
 
   const contacts: Contact[] = [
     { id: 1, name: 'Alex Johnson', lastMessage: 'Can you share the notes?', time: '10:30 AM', unread: 2, online: true },
@@ -46,12 +71,94 @@ const Chat = () => {
       setMessage('');
     }
   };
+  
+  const handleSearch = () => {
+    if (searchQuery.trim().length < 3) {
+      toast({
+        title: "Search query too short",
+        description: "Please enter at least 3 characters",
+        variant: "destructive"
+      });
+      return;
+    }
+    
+    // In a real app, this would be an API call
+    // For now, we'll simulate search results
+    const mockResults: UserSearchResult[] = [
+      { id: 101, name: 'Emily Parker', username: 'em_parker', isFriend: false },
+      { id: 102, name: 'James Wilson', username: 'jwilson', isFriend: true },
+      { id: 103, name: 'David Thompson', username: 'davidt', isFriend: false },
+    ].filter(user => 
+      user.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      user.username.toLowerCase().includes(searchQuery.toLowerCase())
+    );
+    
+    setSearchResults(mockResults);
+  };
+  
+  const generateFriendLink = () => {
+    // In a real app, this would generate a unique link with the user's ID
+    const uniqueCode = Math.random().toString(36).substring(2, 10);
+    const link = `${window.location.origin}/add-friend/${uniqueCode}`;
+    setFriendLink(link);
+    setFriendLinkDialogOpen(true);
+  };
+  
+  const copyLinkToClipboard = () => {
+    navigator.clipboard.writeText(friendLink).then(() => {
+      toast({
+        title: "Link copied!",
+        description: "Friend link copied to clipboard",
+      });
+    }).catch(() => {
+      toast({
+        title: "Failed to copy",
+        description: "Please copy the link manually",
+        variant: "destructive"
+      });
+    });
+  };
+  
+  const handleAddFriend = (user: UserSearchResult) => {
+    // In a real app, this would make an API call to add the friend
+    toast({
+      title: "Friend request sent!",
+      description: `Request sent to ${user.name}`,
+    });
+    
+    // Update the search results to show the user as a friend (in a real app this would happen after the API confirms)
+    setSearchResults(prevResults => 
+      prevResults.map(result => 
+        result.id === user.id ? { ...result, isFriend: true } : result
+      )
+    );
+  };
 
   return (
     <AppLayout>
       <div className="h-[calc(100vh-5rem)] flex border rounded-lg overflow-hidden bg-white">
         {/* Contacts Sidebar */}
         <div className="w-80 border-r flex flex-col bg-gray-50">
+          <div className="p-4 border-b flex justify-between items-center">
+            <div className="text-lg font-semibold">Messages</div>
+            <div className="flex gap-2">
+              <button 
+                onClick={() => setSearchDialogOpen(true)}
+                className="p-2 bg-primary text-white rounded-full hover:bg-primary/90"
+                title="Search for friends"
+              >
+                <UserPlus size={18} />
+              </button>
+              <button 
+                onClick={generateFriendLink}
+                className="p-2 bg-primary text-white rounded-full hover:bg-primary/90"
+                title="Share friend link"
+              >
+                <LinkIcon size={18} />
+              </button>
+            </div>
+          </div>
+          
           <div className="p-4 border-b">
             <div className="relative">
               <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" size={18} />
@@ -62,6 +169,7 @@ const Chat = () => {
               />
             </div>
           </div>
+          
           <div className="flex-1 overflow-y-auto">
             {contacts.map((contact) => (
               <div
@@ -157,6 +265,129 @@ const Chat = () => {
           </div>
         </div>
       </div>
+      
+      {/* Search Friends Dialog */}
+      <Dialog open={searchDialogOpen} onOpenChange={setSearchDialogOpen}>
+        <DialogContent className="sm:max-w-md">
+          <DialogHeader>
+            <DialogTitle>Find Friends</DialogTitle>
+            <DialogDescription>
+              Search for friends by name or username
+            </DialogDescription>
+          </DialogHeader>
+          
+          <div className="flex items-center space-x-2 mt-4">
+            <div className="grid flex-1 gap-2">
+              <Input
+                type="text"
+                placeholder="Search by name or username..."
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+              />
+            </div>
+            <button 
+              onClick={handleSearch}
+              className="px-3 py-2 bg-primary text-white rounded-md hover:bg-primary/90"
+            >
+              Search
+            </button>
+          </div>
+          
+          <div className="mt-4 max-h-[400px] overflow-y-auto">
+            {searchResults.length > 0 ? (
+              <div className="space-y-3">
+                {searchResults.map(user => (
+                  <div key={user.id} className="flex items-center justify-between border-b pb-3">
+                    <div className="flex items-center">
+                      <Avatar className="h-10 w-10 mr-3">
+                        <AvatarImage src={user.avatar} alt={user.name} />
+                        <AvatarFallback>{user.name.charAt(0)}</AvatarFallback>
+                      </Avatar>
+                      <div>
+                        <div className="font-medium">{user.name}</div>
+                        <div className="text-sm text-gray-500">@{user.username}</div>
+                      </div>
+                    </div>
+                    {user.isFriend ? (
+                      <button className="text-green-500 flex items-center" disabled>
+                        <CheckCheck size={18} className="mr-1" />
+                        <span>Friend</span>
+                      </button>
+                    ) : (
+                      <button 
+                        onClick={() => handleAddFriend(user)}
+                        className="flex items-center text-primary hover:text-primary/80"
+                      >
+                        <UserPlus size={18} className="mr-1" />
+                        <span>Add</span>
+                      </button>
+                    )}
+                  </div>
+                ))}
+              </div>
+            ) : searchQuery ? (
+              <div className="text-center py-6 text-gray-500">
+                No users found matching "{searchQuery}"
+              </div>
+            ) : (
+              <div className="text-center py-6 text-gray-500">
+                Search for users to see results
+              </div>
+            )}
+          </div>
+          
+          <DialogFooter className="mt-4">
+            <button
+              className="px-4 py-2 border rounded-md"
+              onClick={() => setSearchDialogOpen(false)}
+            >
+              Close
+            </button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
+      
+      {/* Friend Link Dialog */}
+      <Dialog open={friendLinkDialogOpen} onOpenChange={setFriendLinkDialogOpen}>
+        <DialogContent className="sm:max-w-md">
+          <DialogHeader>
+            <DialogTitle>Share Friend Link</DialogTitle>
+            <DialogDescription>
+              Share this link with friends to add you on PeerLearn
+            </DialogDescription>
+          </DialogHeader>
+          
+          <div className="mt-4 flex items-center">
+            <Input
+              readOnly
+              value={friendLink}
+              className="flex-1 pr-12"
+            />
+            <button
+              onClick={copyLinkToClipboard}
+              className="absolute right-12 px-3 py-1 text-primary hover:text-primary/80"
+              type="button"
+            >
+              Copy
+            </button>
+          </div>
+          
+          <div className="mt-4">
+            <p className="text-sm text-gray-500">
+              This link will allow anyone to add you as a friend on PeerLearn. It expires in 24 hours.
+            </p>
+          </div>
+          
+          <DialogFooter className="mt-4">
+            <button
+              className="px-4 py-2 border rounded-md"
+              onClick={() => setFriendLinkDialogOpen(false)}
+            >
+              Close
+            </button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
     </AppLayout>
   );
 };
