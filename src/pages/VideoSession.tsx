@@ -85,7 +85,7 @@ const VideoSession = () => {
         <div className="flex items-center space-x-3">
           <Dialog>
             <DialogTrigger asChild>
-              <Button variant="primary" size="sm" className="flex items-center gap-2">
+              <Button variant="default" size="sm" className="flex items-center gap-2 bg-primary hover:bg-primary/90">
                 <Users size={16} />
                 Invite
               </Button>
