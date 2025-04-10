@@ -11,7 +11,7 @@ const AppLayout: React.FC<AppLayoutProps> = ({ children }) => {
   const currentYear = new Date().getFullYear();
   
   return (
-    <div className="min-h-screen flex flex-col bg-background">
+    <div className="min-h-screen flex flex-col bg-background transition-colors duration-200">
       <Navbar />
       <div className="container max-w-screen-2xl mx-auto px-4 sm:px-6 py-4">
         <div className="flex justify-end mb-4">

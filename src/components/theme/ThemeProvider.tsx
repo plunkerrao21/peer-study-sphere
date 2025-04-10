@@ -28,12 +28,24 @@ export const ThemeProvider = ({ children }: { children: React.ReactNode }) => {
     // Update localStorage when theme changes
     localStorage.setItem('theme', theme);
     
+    // Add transition class for smooth theme changes
+    document.documentElement.classList.add('transition-colors');
+    document.documentElement.classList.add('duration-200');
+    
     // Update document class
     if (theme === 'dark') {
       document.documentElement.classList.add('dark');
     } else {
       document.documentElement.classList.remove('dark');
     }
+    
+    // Remove transition class after theme change
+    const timeout = setTimeout(() => {
+      document.documentElement.classList.remove('transition-colors');
+      document.documentElement.classList.remove('duration-200');
+    }, 300);
+    
+    return () => clearTimeout(timeout);
   }, [theme]);
 
   return (
