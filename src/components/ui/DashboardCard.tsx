@@ -19,14 +19,14 @@ const DashboardCard: React.FC<DashboardCardProps> = ({
 }) => {
   return (
     <Link to={to} className="block">
-      <div className="bg-white rounded-xl shadow-sm hover:shadow-md transition-shadow p-6 h-full border border-gray-100">
+      <div className="bg-card rounded-xl shadow-sm hover:shadow-md transition-shadow p-6 h-full border border-border">
         <div className="mb-4">
           <div className={`w-12 h-12 ${color} rounded-lg flex items-center justify-center text-white`}>
             {icon}
           </div>
         </div>
-        <h3 className="text-lg font-semibold mb-2">{title}</h3>
-        <p className="text-gray-600 text-sm">{description}</p>
+        <h3 className="text-lg font-semibold mb-2 text-foreground">{title}</h3>
+        <p className="text-muted-foreground text-sm">{description}</p>
       </div>
     </Link>
   );
