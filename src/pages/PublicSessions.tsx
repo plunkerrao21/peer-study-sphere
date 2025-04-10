@@ -3,6 +3,8 @@ import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import AppLayout from '../components/layout/AppLayout';
 import SessionCard from '../components/ui/SessionCard';
+import { Button } from '@/components/ui/button';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 
 const PublicSessions = () => {
   const navigate = useNavigate();
@@ -66,40 +68,51 @@ const PublicSessions = () => {
     <AppLayout>
       <div className="max-w-6xl mx-auto">
         <header className="mb-8">
-          <h1 className="text-3xl font-bold text-gray-900">Study Sessions</h1>
-          <p className="text-gray-600 mt-2">
+          <h1 className="text-3xl font-bold text-foreground">Study Sessions</h1>
+          <p className="text-muted-foreground mt-2">
             Join live study sessions or schedule your own.
           </p>
         </header>
 
         <div className="flex justify-between items-center mb-6">
           <div className="flex space-x-2">
-            <button className="btn btn-primary">
+            <Button>
               Create Session
-            </button>
-            <button className="btn btn-outline">
+            </Button>
+            <Button variant="outline">
               My Sessions
-            </button>
+            </Button>
           </div>
           <div className="flex items-center space-x-4">
-            <select className="border rounded-md px-3 py-2 bg-white focus:outline-none focus:ring-2 focus:ring-primary">
-              <option>All Subjects</option>
-              <option>Physics</option>
-              <option>Mathematics</option>
-              <option>Computer Science</option>
-              <option>Chemistry</option>
-              <option>Literature</option>
-            </select>
-            <select className="border rounded-md px-3 py-2 bg-white focus:outline-none focus:ring-2 focus:ring-primary">
-              <option>All Sessions</option>
-              <option>Live Now</option>
-              <option>Upcoming</option>
-            </select>
+            <Select defaultValue="all-subjects">
+              <SelectTrigger className="w-[180px]">
+                <SelectValue placeholder="All Subjects" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="all-subjects">All Subjects</SelectItem>
+                <SelectItem value="physics">Physics</SelectItem>
+                <SelectItem value="mathematics">Mathematics</SelectItem>
+                <SelectItem value="computer-science">Computer Science</SelectItem>
+                <SelectItem value="chemistry">Chemistry</SelectItem>
+                <SelectItem value="literature">Literature</SelectItem>
+              </SelectContent>
+            </Select>
+            
+            <Select defaultValue="all-sessions">
+              <SelectTrigger className="w-[180px]">
+                <SelectValue placeholder="All Sessions" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="all-sessions">All Sessions</SelectItem>
+                <SelectItem value="live-now">Live Now</SelectItem>
+                <SelectItem value="upcoming">Upcoming</SelectItem>
+              </SelectContent>
+            </Select>
           </div>
         </div>
 
         <section>
-          <h2 className="text-xl font-semibold mb-5">Live Now</h2>
+          <h2 className="text-xl font-semibold mb-5 text-foreground">Live Now</h2>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-10">
             {sessions.filter(session => session.isLive).map(session => (
               <SessionCard
@@ -114,7 +127,7 @@ const PublicSessions = () => {
             ))}
           </div>
 
-          <h2 className="text-xl font-semibold mb-5">Upcoming Sessions</h2>
+          <h2 className="text-xl font-semibold mb-5 text-foreground">Upcoming Sessions</h2>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {sessions.filter(session => !session.isLive).map(session => (
               <SessionCard

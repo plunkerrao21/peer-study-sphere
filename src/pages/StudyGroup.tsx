@@ -2,6 +2,8 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Send, Search, Bell, User, Video, Settings, Plus, FileText, Book } from 'lucide-react';
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
 
 const StudyGroup = () => {
   const [message, setMessage] = useState('');
@@ -51,27 +53,27 @@ const StudyGroup = () => {
   };
 
   return (
-    <div className="h-screen flex flex-col">
+    <div className="h-screen flex flex-col bg-background">
       {/* Header */}
-      <header className="bg-white border-b px-6 py-3 flex items-center justify-between">
+      <header className="bg-card border-b border-border px-6 py-3 flex items-center justify-between">
         <div className="flex items-center space-x-4">
           <button 
-            className="text-primary hover:bg-primary-50 p-2 rounded-md"
+            className="text-primary hover:bg-primary-foreground/10 p-2 rounded-md"
             onClick={() => navigate('/dashboard')}
           >
             Back to Dashboard
           </button>
-          <h1 className="text-xl font-bold">{group.name}</h1>
+          <h1 className="text-xl font-bold text-foreground">{group.name}</h1>
         </div>
         <div className="flex items-center space-x-2">
-          <button className="p-2 hover:bg-gray-100 rounded-full">
-            <Bell size={20} className="text-gray-600" />
+          <button className="p-2 hover:bg-muted rounded-full">
+            <Bell size={20} className="text-muted-foreground" />
           </button>
-          <button className="p-2 hover:bg-gray-100 rounded-full">
-            <Settings size={20} className="text-gray-600" />
+          <button className="p-2 hover:bg-muted rounded-full">
+            <Settings size={20} className="text-muted-foreground" />
           </button>
-          <button className="p-2 hover:bg-gray-100 rounded-full">
-            <User size={20} className="text-gray-600" />
+          <button className="p-2 hover:bg-muted rounded-full">
+            <User size={20} className="text-muted-foreground" />
           </button>
         </div>
       </header>
@@ -79,27 +81,27 @@ const StudyGroup = () => {
       {/* Main Content */}
       <div className="flex-1 flex overflow-hidden">
         {/* Left Sidebar - Group List */}
-        <div className="w-64 bg-gray-50 border-r flex flex-col">
+        <div className="w-64 bg-muted/30 border-r border-border flex flex-col">
           <div className="p-4">
             <div className="relative">
-              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" size={16} />
-              <input
+              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground" size={16} />
+              <Input
                 type="text"
                 placeholder="Search channels"
-                className="w-full pl-10 pr-4 py-2 border rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-primary"
+                className="w-full pl-10 pr-4 py-2 text-sm"
               />
             </div>
           </div>
           
-          <div className="p-4 border-b">
-            <h2 className="text-xs font-semibold text-gray-500 uppercase tracking-wider mb-2">Channels</h2>
+          <div className="p-4 border-b border-border">
+            <h2 className="text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-2">Channels</h2>
             <ul className="space-y-1">
               {group.channels.map((channel) => (
                 <li key={channel.id}>
-                  <a href="#" className="flex items-center justify-between p-2 rounded-md hover:bg-gray-200 text-gray-700">
+                  <a href="#" className="flex items-center justify-between p-2 rounded-md hover:bg-muted text-foreground">
                     <span className="text-sm">#{channel.name}</span>
                     {channel.unread > 0 && (
-                      <span className="w-5 h-5 bg-primary rounded-full flex items-center justify-center text-white text-xs">
+                      <span className="w-5 h-5 bg-primary rounded-full flex items-center justify-center text-primary-foreground text-xs">
                         {channel.unread}
                       </span>
                     )}
@@ -107,7 +109,7 @@ const StudyGroup = () => {
                 </li>
               ))}
               <li>
-                <a href="#" className="flex items-center p-2 rounded-md hover:bg-gray-200 text-gray-700">
+                <a href="#" className="flex items-center p-2 rounded-md hover:bg-muted text-foreground">
                   <Plus size={16} className="mr-2" />
                   <span className="text-sm">Add Channel</span>
                 </a>
@@ -115,17 +117,17 @@ const StudyGroup = () => {
             </ul>
           </div>
           
-          <div className="p-4 border-b">
-            <h2 className="text-xs font-semibold text-gray-500 uppercase tracking-wider mb-2">Upcoming Sessions</h2>
+          <div className="p-4 border-b border-border">
+            <h2 className="text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-2">Upcoming Sessions</h2>
             <ul className="space-y-2">
               {group.upcomingSessions.map((session) => (
-                <li key={session.id} className="bg-white rounded-md p-3 border">
+                <li key={session.id} className="bg-card rounded-md p-3 border border-border">
                   <div className="flex items-start justify-between">
                     <div>
-                      <p className="text-sm font-medium">{session.title}</p>
-                      <p className="text-xs text-gray-500">{session.date}</p>
+                      <p className="text-sm font-medium text-foreground">{session.title}</p>
+                      <p className="text-xs text-muted-foreground">{session.date}</p>
                     </div>
-                    <button className="text-primary p-1 hover:bg-primary-50 rounded">
+                    <button className="text-primary p-1 hover:bg-primary/10 rounded">
                       <Video size={16} />
                     </button>
                   </div>
@@ -135,21 +137,21 @@ const StudyGroup = () => {
           </div>
           
           <div className="p-4">
-            <h2 className="text-xs font-semibold text-gray-500 uppercase tracking-wider mb-2">Resources</h2>
+            <h2 className="text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-2">Resources</h2>
             <ul className="space-y-1">
               {group.resources.map((resource) => (
                 <li key={resource.id}>
-                  <a href="#" className="flex items-center p-2 rounded-md hover:bg-gray-200 text-gray-700">
-                    <FileText size={16} className="mr-2 text-gray-500" />
+                  <a href="#" className="flex items-center p-2 rounded-md hover:bg-muted text-foreground">
+                    <FileText size={16} className="mr-2 text-muted-foreground" />
                     <div className="flex-1 min-w-0">
                       <p className="text-sm truncate">{resource.name}</p>
-                      <p className="text-xs text-gray-500">{resource.added}</p>
+                      <p className="text-xs text-muted-foreground">{resource.added}</p>
                     </div>
                   </a>
                 </li>
               ))}
               <li>
-                <a href="#" className="flex items-center p-2 rounded-md hover:bg-gray-200 text-gray-700">
+                <a href="#" className="flex items-center p-2 rounded-md hover:bg-muted text-foreground">
                   <Plus size={16} className="mr-2" />
                   <span className="text-sm">Add Resource</span>
                 </a>
@@ -159,65 +161,65 @@ const StudyGroup = () => {
         </div>
 
         {/* Center - Chat Area */}
-        <div className="flex-1 flex flex-col">
+        <div className="flex-1 flex flex-col bg-card">
           {/* Chat Messages */}
           <div className="flex-1 overflow-y-auto p-6 space-y-4">
             {group.messages.map((msg) => (
               <div key={msg.id} className="flex items-start">
-                <div className="mr-3 w-8 h-8 rounded-full bg-gray-300 flex items-center justify-center">
-                  <User size={16} className="text-gray-600" />
+                <div className="mr-3 w-8 h-8 rounded-full bg-muted flex items-center justify-center">
+                  <User size={16} className="text-muted-foreground" />
                 </div>
                 <div>
                   <div className="flex items-baseline">
-                    <span className="font-medium mr-2">{msg.sender}</span>
-                    <span className="text-xs text-gray-500">{msg.time}</span>
+                    <span className="font-medium mr-2 text-foreground">{msg.sender}</span>
+                    <span className="text-xs text-muted-foreground">{msg.time}</span>
                   </div>
-                  <p className="text-gray-800">{msg.content}</p>
+                  <p className="text-foreground">{msg.content}</p>
                 </div>
               </div>
             ))}
           </div>
 
           {/* Message Input */}
-          <div className="p-4 border-t">
+          <div className="p-4 border-t border-border">
             <form onSubmit={handleSendMessage} className="flex items-center space-x-2">
-              <input
+              <Input
                 type="text"
                 value={message}
                 onChange={(e) => setMessage(e.target.value)}
                 placeholder="Type your message..."
-                className="flex-1 border rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-primary"
+                className="flex-1 rounded-lg"
               />
-              <button
+              <Button
                 type="submit"
-                className="btn btn-primary"
+                className="flex items-center"
               >
                 <Send size={18} className="mr-2" />
                 Send
-              </button>
+              </Button>
             </form>
           </div>
         </div>
 
         {/* Right Sidebar - Members & Tools */}
-        <div className="w-64 bg-gray-50 border-l flex flex-col">
-          <div className="p-4 border-b">
-            <h2 className="text-xs font-semibold text-gray-500 uppercase tracking-wider mb-4">Members ({group.members.length})</h2>
+        <div className="w-64 bg-muted/30 border-l border-border flex flex-col">
+          <div className="p-4 border-b border-border">
+            <h2 className="text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-4">Members ({group.members.length})</h2>
             <ul className="space-y-2">
               {group.members.map((member) => (
                 <li key={member.id} className="flex items-center justify-between">
                   <div className="flex items-center">
                     <div className="relative mr-2">
-                      <div className="w-8 h-8 rounded-full bg-gray-300 flex items-center justify-center">
-                        <User size={14} className="text-gray-600" />
+                      <div className="w-8 h-8 rounded-full bg-muted flex items-center justify-center">
+                        <User size={14} className="text-muted-foreground" />
                       </div>
                       {member.online && (
-                        <div className="absolute bottom-0 right-0 w-2 h-2 bg-green-500 rounded-full border border-white"></div>
+                        <div className="absolute bottom-0 right-0 w-2 h-2 bg-green-500 rounded-full border border-card"></div>
                       )}
                     </div>
                     <div>
-                      <p className="text-sm font-medium">{member.name}</p>
-                      <p className="text-xs text-gray-500">{member.role}</p>
+                      <p className="text-sm font-medium text-foreground">{member.name}</p>
+                      <p className="text-xs text-muted-foreground">{member.role}</p>
                     </div>
                   </div>
                 </li>
@@ -225,54 +227,54 @@ const StudyGroup = () => {
             </ul>
           </div>
           
-          <div className="p-4 border-b">
-            <h2 className="text-xs font-semibold text-gray-500 uppercase tracking-wider mb-3">Tools</h2>
+          <div className="p-4 border-b border-border">
+            <h2 className="text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-3">Tools</h2>
             <ul className="grid grid-cols-2 gap-2">
               <li>
-                <button className="w-full flex flex-col items-center p-3 bg-white rounded-md border hover:border-primary transition-colors">
+                <button className="w-full flex flex-col items-center p-3 bg-card rounded-md border border-border hover:border-primary transition-colors">
                   <Video size={20} className="text-primary mb-1" />
-                  <span className="text-xs">Video Call</span>
+                  <span className="text-xs text-foreground">Video Call</span>
                 </button>
               </li>
               <li>
-                <button className="w-full flex flex-col items-center p-3 bg-white rounded-md border hover:border-primary transition-colors">
+                <button className="w-full flex flex-col items-center p-3 bg-card rounded-md border border-border hover:border-primary transition-colors">
                   <FileText size={20} className="text-primary mb-1" />
-                  <span className="text-xs">Share Files</span>
+                  <span className="text-xs text-foreground">Share Files</span>
                 </button>
               </li>
               <li>
-                <button className="w-full flex flex-col items-center p-3 bg-white rounded-md border hover:border-primary transition-colors">
+                <button className="w-full flex flex-col items-center p-3 bg-card rounded-md border border-border hover:border-primary transition-colors">
                   <Book size={20} className="text-primary mb-1" />
-                  <span className="text-xs">Quiz</span>
+                  <span className="text-xs text-foreground">Quiz</span>
                 </button>
               </li>
               <li>
-                <button className="w-full flex flex-col items-center p-3 bg-white rounded-md border hover:border-primary transition-colors">
+                <button className="w-full flex flex-col items-center p-3 bg-card rounded-md border border-border hover:border-primary transition-colors">
                   <Settings size={20} className="text-primary mb-1" />
-                  <span className="text-xs">Settings</span>
+                  <span className="text-xs text-foreground">Settings</span>
                 </button>
               </li>
             </ul>
           </div>
           
           <div className="p-4">
-            <h2 className="text-xs font-semibold text-gray-500 uppercase tracking-wider mb-3">Study Progress</h2>
+            <h2 className="text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-3">Study Progress</h2>
             <div className="space-y-4">
               <div>
                 <div className="flex justify-between text-xs mb-1">
-                  <span>Homework #3</span>
-                  <span>75%</span>
+                  <span className="text-foreground">Homework #3</span>
+                  <span className="text-foreground">75%</span>
                 </div>
-                <div className="w-full bg-gray-200 rounded-full h-2">
+                <div className="w-full bg-muted rounded-full h-2">
                   <div className="bg-primary h-2 rounded-full" style={{ width: '75%' }}></div>
                 </div>
               </div>
               <div>
                 <div className="flex justify-between text-xs mb-1">
-                  <span>Quiz Preparation</span>
-                  <span>40%</span>
+                  <span className="text-foreground">Quiz Preparation</span>
+                  <span className="text-foreground">40%</span>
                 </div>
-                <div className="w-full bg-gray-200 rounded-full h-2">
+                <div className="w-full bg-muted rounded-full h-2">
                   <div className="bg-primary h-2 rounded-full" style={{ width: '40%' }}></div>
                 </div>
               </div>

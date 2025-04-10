@@ -3,6 +3,8 @@ import React, { useState } from 'react';
 import AppLayout from '../components/layout/AppLayout';
 import NoteCard from '../components/ui/NoteCard';
 import { Search, Upload, Plus, FileText } from 'lucide-react';
+import { Input } from '@/components/ui/input';
+import { Button } from '@/components/ui/button';
 
 const Notes = () => {
   const [searchQuery, setSearchQuery] = useState('');
@@ -82,36 +84,36 @@ const Notes = () => {
     <AppLayout>
       <div className="max-w-6xl mx-auto">
         <header className="mb-8">
-          <h1 className="text-3xl font-bold text-gray-900">Study Notes</h1>
-          <p className="text-gray-600 mt-2">
+          <h1 className="text-3xl font-bold text-foreground">Study Notes</h1>
+          <p className="text-muted-foreground mt-2">
             Access and share notes with your peers.
           </p>
         </header>
 
         <div className="flex flex-col md:flex-row justify-between md:items-center mb-6 space-y-4 md:space-y-0">
           <div className="flex space-x-2">
-            <button className="btn btn-primary flex items-center">
+            <Button className="flex items-center">
               <Upload size={18} className="mr-2" />
               Upload Notes
-            </button>
-            <button className="btn btn-outline flex items-center">
+            </Button>
+            <Button variant="outline" className="flex items-center">
               <Plus size={18} className="mr-2" />
               Create Note
-            </button>
+            </Button>
           </div>
           <div className="relative w-full md:w-64">
-            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" size={18} />
-            <input
+            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground" size={18} />
+            <Input
               type="text"
               placeholder="Search notes..."
-              className="w-full pl-10 pr-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary"
+              className="w-full pl-10 pr-4"
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
             />
           </div>
         </div>
 
-        <div className="mb-6 border-b">
+        <div className="mb-6 border-b border-border">
           <div className="flex space-x-6 overflow-x-auto pb-2">
             {subjects.map((subject) => (
               <button
@@ -119,7 +121,7 @@ const Notes = () => {
                 className={`py-2 px-1 font-medium text-sm border-b-2 transition-colors ${
                   activeSubject === subject
                     ? 'border-primary text-primary'
-                    : 'border-transparent text-gray-600 hover:text-gray-900 hover:border-gray-300'
+                    : 'border-transparent text-muted-foreground hover:text-foreground hover:border-border'
                 }`}
                 onClick={() => setActiveSubject(subject)}
               >
@@ -146,9 +148,9 @@ const Notes = () => {
           </div>
         ) : (
           <div className="text-center py-12">
-            <FileText size={48} className="mx-auto text-gray-300 mb-4" />
-            <h3 className="text-xl font-medium text-gray-800 mb-2">No notes found</h3>
-            <p className="text-gray-600">
+            <FileText size={48} className="mx-auto text-muted-foreground mb-4" />
+            <h3 className="text-xl font-medium text-foreground mb-2">No notes found</h3>
+            <p className="text-muted-foreground">
               {searchQuery
                 ? `No notes match your search "${searchQuery}"`
                 : `No notes available for ${activeSubject}`}

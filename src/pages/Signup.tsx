@@ -1,7 +1,7 @@
 
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { User, Mail, Lock, CheckSquare } from 'lucide-react';
+import { User, Mail, Lock } from 'lucide-react';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 
@@ -20,9 +20,9 @@ const Signup = () => {
   };
 
   return (
-    <div className="min-h-screen flex bg-gradient-to-r from-primary-100 to-primary-50">
+    <div className="min-h-screen flex bg-background">
       {/* Left side - Illustration and welcome text */}
-      <div className="hidden lg:flex lg:w-1/2 bg-gradient-to-br from-primary to-primary-700 p-12 flex-col justify-between">
+      <div className="hidden lg:flex lg:w-1/2 bg-primary p-12 flex-col justify-between">
         <div>
           <h1 className="text-4xl font-bold text-white mb-6">PeerLearn</h1>
           <p className="text-primary-200 text-lg">Connect, Learn, and Grow Together</p>
@@ -42,21 +42,21 @@ const Signup = () => {
       </div>
       
       {/* Right side - Sign up form */}
-      <div className="w-full lg:w-1/2 flex items-center justify-center p-8">
+      <div className="w-full lg:w-1/2 flex items-center justify-center p-8 bg-background">
         <div className="w-full max-w-md">
           <div className="text-center mb-10">
             <h2 className="text-3xl font-bold text-primary mb-2">Create Your Account</h2>
-            <p className="text-gray-600">Start your peer-powered learning journey</p>
+            <p className="text-muted-foreground">Start your peer-powered learning journey</p>
           </div>
           
           <form onSubmit={handleSubmit} className="space-y-6">
             <div>
-              <label htmlFor="name" className="block text-sm font-medium text-gray-700 mb-1">
+              <label htmlFor="name" className="block text-sm font-medium text-foreground mb-1">
                 Full Name
               </label>
               <div className="relative">
                 <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                  <User className="h-5 w-5 text-gray-400" />
+                  <User className="h-5 w-5 text-muted-foreground" />
                 </div>
                 <Input
                   id="name"
@@ -71,12 +71,12 @@ const Signup = () => {
             </div>
 
             <div>
-              <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-1">
+              <label htmlFor="email" className="block text-sm font-medium text-foreground mb-1">
                 Email Address
               </label>
               <div className="relative">
                 <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                  <Mail className="h-5 w-5 text-gray-400" />
+                  <Mail className="h-5 w-5 text-muted-foreground" />
                 </div>
                 <Input
                   id="email"
@@ -91,12 +91,12 @@ const Signup = () => {
             </div>
 
             <div>
-              <label htmlFor="password" className="block text-sm font-medium text-gray-700 mb-1">
+              <label htmlFor="password" className="block text-sm font-medium text-foreground mb-1">
                 Create Password
               </label>
               <div className="relative">
                 <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                  <Lock className="h-5 w-5 text-gray-400" />
+                  <Lock className="h-5 w-5 text-muted-foreground" />
                 </div>
                 <Input
                   id="password"
@@ -111,12 +111,12 @@ const Signup = () => {
             </div>
 
             <div>
-              <label htmlFor="confirmPassword" className="block text-sm font-medium text-gray-700 mb-1">
+              <label htmlFor="confirmPassword" className="block text-sm font-medium text-foreground mb-1">
                 Confirm Password
               </label>
               <div className="relative">
                 <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                  <Lock className="h-5 w-5 text-gray-400" />
+                  <Lock className="h-5 w-5 text-muted-foreground" />
                 </div>
                 <Input
                   id="confirmPassword"
@@ -135,12 +135,12 @@ const Signup = () => {
                 id="agree-terms"
                 name="agree-terms"
                 type="checkbox"
-                className="h-4 w-4 text-primary focus:ring-primary border-gray-300 rounded"
+                className="h-4 w-4 text-primary focus:ring-primary border-border rounded"
                 checked={agreeToTerms}
                 onChange={(e) => setAgreeToTerms(e.target.checked)}
                 required
               />
-              <label htmlFor="agree-terms" className="ml-2 block text-sm text-gray-700">
+              <label htmlFor="agree-terms" className="ml-2 block text-sm text-foreground">
                 I agree to the{' '}
                 <Link to="/terms" className="text-primary hover:underline">
                   Terms
@@ -152,12 +152,12 @@ const Signup = () => {
               </label>
             </div>
 
-            <Button type="submit" className="w-full py-2 px-4 bg-primary hover:bg-primary-700 text-white rounded-md">
+            <Button type="submit" className="w-full">
               Create Account
             </Button>
 
             <div className="text-center mt-4">
-              <p className="text-gray-600">
+              <p className="text-muted-foreground">
                 Already have an account?{' '}
                 <Link to="/login" className="text-primary hover:underline font-medium">
                   Login here

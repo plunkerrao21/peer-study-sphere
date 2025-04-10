@@ -2,6 +2,8 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import AuthLayout from '../components/layout/AuthLayout';
+import { Input } from '@/components/ui/input';
+import { Button } from '@/components/ui/button';
 
 const Login = () => {
   const [email, setEmail] = useState('');
@@ -21,14 +23,14 @@ const Login = () => {
     >
       <form onSubmit={handleSubmit} className="space-y-6">
         <div>
-          <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-1">
+          <label htmlFor="email" className="block text-sm font-medium text-foreground mb-1">
             Email
           </label>
-          <input
+          <Input
             id="email"
             type="email"
             required
-            className="form-input"
+            className="w-full"
             placeholder="Your email address"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
@@ -37,30 +39,30 @@ const Login = () => {
 
         <div>
           <div className="flex items-center justify-between mb-1">
-            <label htmlFor="password" className="block text-sm font-medium text-gray-700">
+            <label htmlFor="password" className="block text-sm font-medium text-foreground">
               Password
             </label>
             <Link to="/forgot-password" className="text-sm text-primary hover:underline">
               Forgot password?
             </Link>
           </div>
-          <input
+          <Input
             id="password"
             type="password"
             required
-            className="form-input"
+            className="w-full"
             placeholder="Your password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
           />
         </div>
 
-        <button type="submit" className="btn btn-primary w-full">
+        <Button type="submit" className="w-full">
           Log in
-        </button>
+        </Button>
 
         <div className="text-center mt-6">
-          <p className="text-gray-600">
+          <p className="text-muted-foreground">
             Don't have an account?{' '}
             <Link to="/signup" className="text-primary hover:underline font-medium">
               Sign up

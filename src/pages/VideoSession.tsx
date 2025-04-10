@@ -75,17 +75,17 @@ const VideoSession = () => {
   };
 
   return (
-    <div className="h-screen bg-gray-900 flex flex-col">
+    <div className="h-screen bg-background flex flex-col">
       {/* Header */}
-      <div className="bg-gray-800 text-white py-3 px-6 flex items-center justify-between">
+      <div className="bg-card text-foreground py-3 px-6 flex items-center justify-between border-b border-border">
         <div>
           <h1 className="font-semibold">Physics Study Session: Quantum Mechanics</h1>
-          <p className="text-sm text-gray-400">Hosted by Alex Johnson • {participants.length} Participants</p>
+          <p className="text-sm text-muted-foreground">Hosted by Alex Johnson • {participants.length} Participants</p>
         </div>
         <div className="flex items-center space-x-3">
           <Dialog>
             <DialogTrigger asChild>
-              <Button variant="default" size="sm" className="flex items-center gap-2 bg-primary hover:bg-primary/90">
+              <Button variant="default" size="sm" className="flex items-center gap-2">
                 <Users size={16} />
                 Invite
               </Button>
@@ -97,15 +97,15 @@ const VideoSession = () => {
               <div className="max-h-[60vh] overflow-auto py-4">
                 <div className="grid gap-4">
                   {mockFriends.map(friend => (
-                    <div key={friend.id} className="flex items-center justify-between p-3 rounded-lg border">
+                    <div key={friend.id} className="flex items-center justify-between p-3 rounded-lg border border-border">
                       <div className="flex items-center gap-3">
                         <Avatar>
                           <AvatarImage src={friend.avatar} alt={friend.name} />
                           <AvatarFallback>{friend.name.charAt(0)}</AvatarFallback>
                         </Avatar>
                         <div>
-                          <p className="font-medium">{friend.name}</p>
-                          <p className="text-sm text-gray-500">@{friend.username}</p>
+                          <p className="font-medium text-foreground">{friend.name}</p>
+                          <p className="text-sm text-muted-foreground">@{friend.username}</p>
                         </div>
                       </div>
                       <Button 
@@ -120,10 +120,10 @@ const VideoSession = () => {
                   ))}
                 </div>
                 
-                <div className="mt-6 pt-6 border-t">
-                  <p className="text-sm text-gray-500 mb-2">Or share this link to invite others:</p>
+                <div className="mt-6 pt-6 border-t border-border">
+                  <p className="text-sm text-muted-foreground mb-2">Or share this link to invite others:</p>
                   <div className="flex items-center gap-2">
-                    <div className="flex-1 p-2 bg-gray-100 rounded-md text-sm truncate">
+                    <div className="flex-1 p-2 bg-muted rounded-md text-sm truncate text-foreground">
                       {sessionLink}
                     </div>
                     <Button size="icon" variant="outline" onClick={copySessionLink}>
@@ -146,7 +146,7 @@ const VideoSession = () => {
         {/* Video Grid */}
         <div className="flex-1 p-4 grid grid-cols-2 gap-4">
           {participants.map((participant) => (
-            <div key={participant.id} className="bg-gray-800 rounded-lg overflow-hidden relative">
+            <div key={participant.id} className="bg-muted rounded-lg overflow-hidden relative">
               <div className="absolute inset-0 flex items-center justify-center">
                 {participant.isSelf && cameraEnabled ? (
                   <img
@@ -161,8 +161,8 @@ const VideoSession = () => {
                     className="w-full h-full object-cover"
                   />
                 ) : (
-                  <div className="w-20 h-20 rounded-full bg-gray-700 flex items-center justify-center">
-                    <User size={40} className="text-gray-500" />
+                  <div className="w-20 h-20 rounded-full bg-background flex items-center justify-center">
+                    <User size={40} className="text-muted-foreground" />
                   </div>
                 )}
               </div>
@@ -180,17 +180,17 @@ const VideoSession = () => {
         
         {/* Chat Sidebar */}
         {chatOpen && (
-          <div className="w-80 bg-gray-800 border-l border-gray-700 flex flex-col">
-            <div className="p-4 border-b border-gray-700 text-white font-medium">
+          <div className="w-80 bg-card border-l border-border flex flex-col">
+            <div className="p-4 border-b border-border text-foreground font-medium">
               Chat
             </div>
             <div className="flex-1 overflow-y-auto p-4 space-y-4">
               {[1, 2, 3, 4, 5].map((msg) => (
                 <div key={msg} className="text-sm">
-                  <p className="text-gray-400 font-medium mb-1">
+                  <p className="text-muted-foreground font-medium mb-1">
                     {['You', 'Alex Johnson', 'Sarah Williams'][msg % 3]}
                   </p>
-                  <p className="text-white">
+                  <p className="text-foreground">
                     {[
                       'Has anyone covered the homework from chapter 7?',
                       'Yes, I finished it yesterday.',
@@ -202,11 +202,11 @@ const VideoSession = () => {
                 </div>
               ))}
             </div>
-            <div className="p-4 border-t border-gray-700">
-              <input
+            <div className="p-4 border-t border-border">
+              <Input
                 type="text"
                 placeholder="Type a message..."
-                className="w-full bg-gray-700 border-none rounded-md px-3 py-2 text-white placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-primary"
+                className="w-full bg-muted text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary"
               />
             </div>
           </div>
@@ -214,13 +214,13 @@ const VideoSession = () => {
       </div>
       
       {/* Controls */}
-      <div className="bg-gray-800 py-4 flex items-center justify-center space-x-4">
+      <div className="bg-card py-4 flex items-center justify-center space-x-4 border-t border-border">
         <button
           onClick={toggleMic}
-          className={`p-3 rounded-full ${micEnabled ? 'bg-gray-700 hover:bg-gray-600' : 'bg-red-500 hover:bg-red-600'}`}
+          className={`p-3 rounded-full ${micEnabled ? 'bg-muted hover:bg-muted/80' : 'bg-red-500 hover:bg-red-600'}`}
         >
           {micEnabled ? (
-            <Mic size={20} className="text-white" />
+            <Mic size={20} className="text-foreground" />
           ) : (
             <MicOff size={20} className="text-white" />
           )}
@@ -228,10 +228,10 @@ const VideoSession = () => {
         
         <button
           onClick={toggleCamera}
-          className={`p-3 rounded-full ${cameraEnabled ? 'bg-gray-700 hover:bg-gray-600' : 'bg-red-500 hover:bg-red-600'}`}
+          className={`p-3 rounded-full ${cameraEnabled ? 'bg-muted hover:bg-muted/80' : 'bg-red-500 hover:bg-red-600'}`}
         >
           {cameraEnabled ? (
-            <Camera size={20} className="text-white" />
+            <Camera size={20} className="text-foreground" />
           ) : (
             <CameraOff size={20} className="text-white" />
           )}
@@ -246,9 +246,9 @@ const VideoSession = () => {
         
         <button
           onClick={toggleChat}
-          className={`p-3 rounded-full ${chatOpen ? 'bg-primary' : 'bg-gray-700 hover:bg-gray-600'}`}
+          className={`p-3 rounded-full ${chatOpen ? 'bg-primary' : 'bg-muted hover:bg-muted/80'}`}
         >
-          <MessageSquare size={20} className="text-white" />
+          <MessageSquare size={20} className={chatOpen ? "text-primary-foreground" : "text-foreground"} />
         </button>
       </div>
 
@@ -270,7 +270,7 @@ const VideoSession = () => {
                     )}
                   </Avatar>
                   <div>
-                    <p className="font-medium">
+                    <p className="font-medium text-foreground">
                       {participant.name} {participant.isSelf && "(You)"}
                     </p>
                   </div>
@@ -278,10 +278,10 @@ const VideoSession = () => {
               ))}
             </div>
             
-            <div className="mt-6 pt-4 border-t">
+            <div className="mt-6 pt-4 border-t border-border">
               <p className="text-sm text-muted-foreground mb-2">Share this link to invite more friends:</p>
               <div className="flex items-center gap-2">
-                <div className="flex-1 p-2 bg-muted rounded text-sm truncate">
+                <div className="flex-1 p-2 bg-muted rounded text-sm truncate text-foreground">
                   {sessionLink}
                 </div>
                 <Button size="icon" variant="outline" onClick={copySessionLink}>

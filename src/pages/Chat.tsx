@@ -136,11 +136,11 @@ const Chat = () => {
 
   return (
     <AppLayout>
-      <div className="h-[calc(100vh-5rem)] flex border rounded-lg overflow-hidden bg-white">
+      <div className="h-[calc(100vh-5rem)] flex border rounded-lg overflow-hidden bg-card">
         {/* Contacts Sidebar */}
-        <div className="w-80 border-r flex flex-col bg-gray-50">
-          <div className="p-4 border-b flex justify-between items-center">
-            <div className="text-lg font-semibold">Messages</div>
+        <div className="w-80 border-r border-border flex flex-col bg-muted/30">
+          <div className="p-4 border-b border-border flex justify-between items-center">
+            <div className="text-lg font-semibold text-foreground">Messages</div>
             <Button 
               onClick={() => setSearchDialogOpen(true)}
               size="icon"
@@ -152,9 +152,9 @@ const Chat = () => {
             </Button>
           </div>
           
-          <div className="p-4 border-b">
+          <div className="p-4 border-b border-border">
             <div className="relative">
-              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" size={18} />
+              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground" size={18} />
               <Input
                 type="text"
                 placeholder="Search messages or contacts"
@@ -167,30 +167,30 @@ const Chat = () => {
             {contacts.map((contact) => (
               <div
                 key={contact.id}
-                className={`p-4 border-b cursor-pointer hover:bg-gray-100 transition-colors ${
-                  activeContact === contact.id ? 'bg-primary-50' : ''
+                className={`p-4 border-b border-border cursor-pointer hover:bg-muted/50 transition-colors ${
+                  activeContact === contact.id ? 'bg-primary/10' : ''
                 }`}
                 onClick={() => setActiveContact(contact.id)}
               >
                 <div className="flex items-start">
                   <div className="relative mr-3">
-                    <div className="w-10 h-10 rounded-full bg-gray-300 flex items-center justify-center">
-                      <User size={20} className="text-gray-600" />
+                    <div className="w-10 h-10 rounded-full bg-muted flex items-center justify-center">
+                      <User size={20} className="text-muted-foreground" />
                     </div>
                     {contact.online && (
-                      <div className="absolute bottom-0 right-0 w-3 h-3 bg-green-500 rounded-full border-2 border-white"></div>
+                      <div className="absolute bottom-0 right-0 w-3 h-3 bg-green-500 rounded-full border-2 border-card"></div>
                     )}
                   </div>
                   <div className="flex-1 min-w-0">
                     <div className="flex justify-between">
-                      <h3 className="font-medium truncate">{contact.name}</h3>
-                      <span className="text-xs text-gray-500">{contact.time}</span>
+                      <h3 className="font-medium truncate text-foreground">{contact.name}</h3>
+                      <span className="text-xs text-muted-foreground">{contact.time}</span>
                     </div>
-                    <p className="text-sm text-gray-600 truncate">{contact.lastMessage}</p>
+                    <p className="text-sm text-muted-foreground truncate">{contact.lastMessage}</p>
                   </div>
                   {contact.unread > 0 && (
                     <div className="ml-2 w-5 h-5 bg-primary rounded-full flex items-center justify-center">
-                      <span className="text-xs text-white">{contact.unread}</span>
+                      <span className="text-xs text-primary-foreground">{contact.unread}</span>
                     </div>
                   )}
                 </div>
@@ -200,23 +200,23 @@ const Chat = () => {
         </div>
 
         {/* Chat Area */}
-        <div className="flex-1 flex flex-col">
+        <div className="flex-1 flex flex-col bg-card">
           {/* Chat Header */}
-          <div className="px-6 py-4 border-b flex items-center">
+          <div className="px-6 py-4 border-b border-border flex items-center">
             <div className="relative mr-3">
-              <div className="w-10 h-10 rounded-full bg-gray-300 flex items-center justify-center">
-                <User size={20} className="text-gray-600" />
+              <div className="w-10 h-10 rounded-full bg-muted flex items-center justify-center">
+                <User size={20} className="text-muted-foreground" />
               </div>
-              <div className="absolute bottom-0 right-0 w-3 h-3 bg-green-500 rounded-full border-2 border-white"></div>
+              <div className="absolute bottom-0 right-0 w-3 h-3 bg-green-500 rounded-full border-2 border-card"></div>
             </div>
             <div>
-              <h2 className="font-semibold">Alex Johnson</h2>
+              <h2 className="font-semibold text-foreground">Alex Johnson</h2>
               <p className="text-xs text-green-500">Online</p>
             </div>
           </div>
 
           {/* Messages */}
-          <div className="flex-1 overflow-y-auto p-6 space-y-4">
+          <div className="flex-1 overflow-y-auto p-6 space-y-4 bg-card">
             {messages.map((msg) => (
               <div
                 key={msg.id}
@@ -225,12 +225,12 @@ const Chat = () => {
                 <div
                   className={`max-w-[80%] rounded-lg p-3 ${
                     msg.sender === 'user'
-                      ? 'bg-primary text-white rounded-tr-none'
-                      : 'bg-gray-100 text-gray-800 rounded-tl-none'
+                      ? 'bg-primary text-primary-foreground rounded-tr-none'
+                      : 'bg-muted text-foreground rounded-tl-none'
                   }`}
                 >
                   <p>{msg.content}</p>
-                  <p className={`text-xs mt-1 ${msg.sender === 'user' ? 'text-primary-100' : 'text-gray-500'}`}>
+                  <p className={`text-xs mt-1 ${msg.sender === 'user' ? 'text-primary-foreground/80' : 'text-muted-foreground'}`}>
                     {msg.time}
                   </p>
                 </div>
@@ -239,21 +239,21 @@ const Chat = () => {
           </div>
 
           {/* Message Input */}
-          <div className="p-4 border-t">
+          <div className="p-4 border-t border-border">
             <form onSubmit={handleSendMessage} className="flex items-center space-x-2">
-              <input
+              <Input
                 type="text"
                 value={message}
                 onChange={(e) => setMessage(e.target.value)}
                 placeholder="Type your message..."
-                className="flex-1 border rounded-full px-4 py-2 focus:outline-none focus:ring-2 focus:ring-primary"
+                className="flex-1 rounded-full"
               />
-              <button
+              <Button
                 type="submit"
-                className="w-10 h-10 rounded-full bg-primary flex items-center justify-center text-white"
+                className="w-10 h-10 rounded-full p-0 flex items-center justify-center"
               >
                 <Send size={18} />
-              </button>
+              </Button>
             </form>
           </div>
         </div>
