@@ -26,15 +26,15 @@ const NoteCard: React.FC<NoteCardProps> = ({
       <div className="flex justify-between mb-3">
         <div className="flex items-center">
           <File size={18} className="mr-2 text-primary" />
-          <span className="text-sm font-medium text-gray-500">{fileType}</span>
+          <span className="text-sm font-medium text-muted-foreground">{fileType}</span>
         </div>
-        <span className="text-sm font-medium bg-primary-50 text-primary px-2 py-0.5 rounded">
+        <span className="text-sm font-medium bg-primary-50 text-primary px-2 py-0.5 rounded dark:bg-primary-900/30">
           {subject}
         </span>
       </div>
-      <h3 className="text-lg font-semibold mb-2">{title}</h3>
-      <p className="text-sm text-gray-500 mb-1">By {author}</p>
-      <p className="text-gray-600 text-sm mb-4 line-clamp-3">{preview}</p>
+      <h3 className="text-lg font-semibold mb-2 text-foreground">{title}</h3>
+      <p className="text-sm text-muted-foreground mb-1">By {author}</p>
+      <p className="text-foreground/80 text-sm mb-4 line-clamp-3">{preview}</p>
       <div className="flex space-x-2">
         <button
           onClick={onView}

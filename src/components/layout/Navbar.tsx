@@ -2,6 +2,7 @@
 import React from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { LogOut, User, Bell } from 'lucide-react';
+import { ThemeToggle } from '../theme/ThemeToggle';
 
 const Navbar = () => {
   const location = useLocation();
@@ -11,7 +12,7 @@ const Navbar = () => {
   };
 
   return (
-    <nav className="w-full bg-white border-b border-gray-200 px-6 py-3 flex items-center justify-between">
+    <nav className="w-full bg-background border-b border-border px-6 py-3 flex items-center justify-between">
       <div className="flex items-center space-x-8">
         <Link to="/dashboard" className="flex items-center space-x-2">
           <div className="w-8 h-8 rounded-full bg-primary flex items-center justify-center">
@@ -43,14 +44,15 @@ const Navbar = () => {
       </div>
       
       <div className="flex items-center space-x-4">
-        <button className="p-2 rounded-full hover:bg-gray-100 transition-colors">
-          <Bell size={20} className="text-gray-600" />
+        <ThemeToggle />
+        <button className="p-2 rounded-full hover:bg-muted transition-colors">
+          <Bell size={20} className="text-foreground" />
         </button>
-        <Link to="/profile" className="p-2 rounded-full hover:bg-gray-100 transition-colors">
-          <User size={20} className="text-gray-600" />
+        <Link to="/profile" className="p-2 rounded-full hover:bg-muted transition-colors">
+          <User size={20} className="text-foreground" />
         </Link>
-        <button className="p-2 rounded-full hover:bg-gray-100 transition-colors">
-          <LogOut size={20} className="text-gray-600" />
+        <button className="p-2 rounded-full hover:bg-muted transition-colors">
+          <LogOut size={20} className="text-foreground" />
         </button>
       </div>
     </nav>

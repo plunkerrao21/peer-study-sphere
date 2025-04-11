@@ -92,22 +92,26 @@
   }
   
   .btn-outline {
-    @apply border border-primary text-primary hover:bg-primary hover:text-primary-foreground;
+    @apply border border-primary text-primary hover:bg-primary hover:text-primary-foreground dark:border-primary dark:text-primary;
   }
   
   .card {
-    @apply bg-card rounded-xl shadow-card p-6;
+    @apply bg-card rounded-xl shadow-card p-6 text-card-foreground;
   }
   
   .form-input {
-    @apply w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-primary;
+    @apply w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-primary bg-background text-foreground border-input;
   }
   
   .nav-link {
-    @apply px-4 py-2 rounded-md hover:bg-primary-50 dark:hover:bg-primary-900/30 transition-colors;
+    @apply px-4 py-2 rounded-md hover:bg-muted transition-colors text-foreground;
   }
   
   .nav-link-active {
-    @apply bg-primary-100 dark:bg-primary-900/50 text-primary font-medium;
+    @apply bg-primary/10 dark:bg-primary/20 text-primary font-medium;
+  }
+  
+  .chat-message-input {
+    @apply fixed bottom-6 left-1/2 transform -translate-x-1/2 w-11/12 max-w-3xl z-10 flex items-center gap-2 p-2 rounded-full bg-background border border-border shadow-lg;
   }
 }

@@ -67,8 +67,8 @@ const Quizzes = () => {
     <AppLayout>
       <div className="max-w-6xl mx-auto">
         <header className="mb-8">
-          <h1 className="text-3xl font-bold text-gray-900">Quizzes</h1>
-          <p className="text-gray-600 mt-2">
+          <h1 className="text-3xl font-bold text-foreground">Quizzes</h1>
+          <p className="text-muted-foreground mt-2">
             Test your knowledge with interactive quizzes.
           </p>
         </header>
@@ -84,17 +84,17 @@ const Quizzes = () => {
             </button>
           </div>
           <div className="relative w-full md:w-64">
-            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" size={18} />
+            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground" size={18} />
             <input
               type="text"
               placeholder="Search quizzes..."
-              className="w-full pl-10 pr-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary"
+              className="w-full pl-10 pr-4 py-2 border rounded-lg bg-background text-foreground focus:outline-none focus:ring-2 focus:ring-primary border-input"
             />
           </div>
         </div>
 
         <div className="mb-8">
-          <h2 className="text-xl font-semibold mb-5">Popular Quizzes</h2>
+          <h2 className="text-xl font-semibold mb-5 text-foreground">Popular Quizzes</h2>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
             {quizzes.slice(0, 4).map((quiz) => (
               <QuizCard
@@ -111,7 +111,7 @@ const Quizzes = () => {
         </div>
 
         <div>
-          <h2 className="text-xl font-semibold mb-5">All Quizzes</h2>
+          <h2 className="text-xl font-semibold mb-5 text-foreground">All Quizzes</h2>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
             {quizzes.map((quiz) => (
               <QuizCard

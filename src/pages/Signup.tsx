@@ -22,10 +22,10 @@ const Signup = () => {
   return (
     <div className="min-h-screen flex bg-background">
       {/* Left side - Illustration and welcome text */}
-      <div className="hidden lg:flex lg:w-1/2 bg-primary p-12 flex-col justify-between">
+      <div className="hidden lg:flex lg:w-1/2 bg-primary dark:bg-primary-900 p-12 flex-col justify-between">
         <div>
           <h1 className="text-4xl font-bold text-white mb-6">PeerLearn</h1>
-          <p className="text-primary-200 text-lg">Connect, Learn, and Grow Together</p>
+          <p className="text-primary-200 dark:text-primary-300 text-lg">Connect, Learn, and Grow Together</p>
         </div>
         
         <div className="mx-auto max-w-md">
@@ -36,7 +36,7 @@ const Signup = () => {
           />
           <div className="mt-6">
             <h2 className="text-2xl font-bold text-white">"Everyone is a student. Everyone is a teacher."</h2>
-            <p className="text-primary-200 mt-2">Join our community of learners and educators today.</p>
+            <p className="text-primary-200 dark:text-primary-300 mt-2">Join our community of learners and educators today.</p>
           </div>
         </div>
       </div>
