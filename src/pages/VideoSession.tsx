@@ -22,12 +22,20 @@ const mockFriends = [
   { id: 2, name: 'Sarah Williams', username: 'sarahw', avatar: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=687&q=80' },
 ];
 
+// Define participant type to include avatar
+interface Participant {
+  id: number;
+  name: string;
+  isSelf?: boolean;
+  avatar?: string;
+}
+
 const VideoSession = () => {
   const [micEnabled, setMicEnabled] = useState(true);
   const [cameraEnabled, setCameraEnabled] = useState(true);
   const [chatOpen, setChatOpen] = useState(false);
   const [inviteDialog, setInviteDialog] = useState(false);
-  const [participants, setParticipants] = useState([
+  const [participants, setParticipants] = useState<Participant[]>([
     { id: 1, name: 'You', isSelf: true },
   ]);
   const [linkCopied, setLinkCopied] = useState(false);
@@ -98,8 +106,12 @@ const VideoSession = () => {
       let stream: MediaStream;
       
       if (type === 'screen') {
+        // Use type assertion to handle cursor property
         stream = await navigator.mediaDevices.getDisplayMedia({
-          video: { cursor: 'always' },
+          video: { 
+            // @ts-ignore -- cursor is valid but not in the type definition
+            cursor: 'always' 
+          },
           audio: true
         });
       } else {
