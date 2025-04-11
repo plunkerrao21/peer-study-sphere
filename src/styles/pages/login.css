@@ -1,0 +1,29 @@
+
+/* Login page styles */
+.login-container {
+  @apply min-h-screen flex bg-background;
+}
+
+.login-illustration {
+  @apply hidden lg:flex lg:w-1/2 bg-primary dark:bg-primary-900 p-12 flex-col justify-between;
+}
+
+.login-form-container {
+  @apply w-full lg:w-1/2 flex items-center justify-center p-8 bg-background;
+}
+
+.login-form {
+  @apply w-full max-w-md;
+}
+
+.login-heading {
+  @apply text-center mb-10;
+}
+
+.login-title {
+  @apply text-3xl font-bold text-primary mb-2;
+}
+
+.login-subtitle {
+  @apply text-muted-foreground;
+}

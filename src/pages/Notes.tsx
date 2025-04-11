@@ -1,11 +1,16 @@
-
 import React, { useState } from 'react';
-import AppLayout from '../components/layout/AppLayout';
-import NoteCard from '../components/ui/NoteCard';
-import { Search, Upload, FileText } from 'lucide-react';
+import { Search, FileText, Upload } from 'lucide-react';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
-import { toast } from '@/hooks/use-toast';
+import { 
+  Dialog, 
+  DialogContent, 
+  DialogHeader, 
+  DialogTitle,
+  DialogTrigger 
+} from '@/components/ui/dialog';
+import { Label } from '@/components/ui/label';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 
 const Notes = () => {
   const [searchQuery, setSearchQuery] = useState('');
@@ -13,166 +18,116 @@ const Notes = () => {
   const [notes, setNotes] = useState<any[]>([]);
 
   const subjects = ['All', 'Physics', 'Mathematics', 'Computer Science', 'Chemistry', 'Literature'];
-  
-  // Placeholder for demonstration - in a real app, this would fetch from an API
-  const placeholderNotes = [
-    {
-      id: 1,
-      title: 'Quantum Mechanics: Wave Functions',
-      subject: 'Physics',
-      author: 'Alex Johnson',
-      preview: 'Introduction to wave functions in quantum mechanics. Includes explanations of the Schrödinger equation and probability distributions.',
-      fileType: 'PDF',
-    },
-    {
-      id: 2,
-      title: 'Advanced Calculus: Integration Methods',
-      subject: 'Mathematics',
-      author: 'Sarah Williams',
-      preview: 'Comprehensive guide to various integration techniques, including substitution, parts, partial fractions, and trigonometric integrals.',
-      fileType: 'PDF',
-    },
-  ];
 
-  // Simulate loading placeholders for demonstration
-  React.useEffect(() => {
-    // Simulate API call with a short delay
-    const timer = setTimeout(() => {
-      setNotes(placeholderNotes);
-    }, 500);
-    
-    return () => clearTimeout(timer);
-  }, []);
-
-  const filteredNotes = notes.filter(note => {
-    return (
-      (activeSubject === 'All' || note.subject === activeSubject) &&
-      (note.title.toLowerCase().includes(searchQuery.toLowerCase()) || 
-       note.author.toLowerCase().includes(searchQuery.toLowerCase()) ||
-       note.preview.toLowerCase().includes(searchQuery.toLowerCase()))
-    );
-  });
-
-  const handleView = (id: number) => {
-    console.log(`Viewing note ${id}`);
-    // This would open the note viewer in a real application
-  };
-
-  const handleDownload = (id: number) => {
-    console.log(`Downloading note ${id}`);
-    toast({
-      title: "Download started",
-      description: `Your note is being downloaded`,
-      duration: 3000,
-    });
-  };
-  
-  const handleShare = (id: number) => {
-    // In a real app, this would generate a sharing dialog or API call
-    toast({
-      title: "Note shared",
-      description: "A sharing link has been generated and sent",
-      duration: 3000,
-    });
-  };
-  
-  const handleCopyLink = (id: number) => {
-    // In a real app, this would copy a real link to the clipboard
-    const dummyLink = `https://peerlearn.com/notes/${id}`;
-    navigator.clipboard.writeText(dummyLink);
-    toast({
-      title: "Link copied",
-      description: "Note link copied to clipboard",
-      duration: 3000,
-    });
-  };
-
-  const handleUpload = () => {
-    // This would trigger a file upload dialog in a real app
-    toast({
-      title: "Upload feature",
-      description: "File upload dialog would open here",
-      duration: 3000,
-    });
+  // Just a UI placeholder. No actual implementation needed
+  const handleSubmitNotes = (e: React.FormEvent) => {
+    e.preventDefault();
+    // This would be replaced with your own logic
   };
 
   return (
-    <AppLayout>
-      <div className="max-w-6xl mx-auto">
-        <header className="mb-8">
-          <h1 className="text-3xl font-bold text-foreground">Study Notes</h1>
-          <p className="text-muted-foreground mt-2">
-            Access and share notes with your peers.
-          </p>
-        </header>
+    <div className="notes-container">
+      <header className="notes-header">
+        <h1 className="notes-title">Study Notes</h1>
+        <p className="notes-subtitle">
+          Access and share notes with your peers.
+        </p>
+      </header>
 
-        <div className="flex flex-col md:flex-row justify-between md:items-center mb-6 space-y-4 md:space-y-0">
-          <div className="flex space-x-2">
-            <Button className="flex items-center" onClick={handleUpload}>
-              <Upload size={18} className="mr-2" />
-              Upload Notes
-            </Button>
-          </div>
-          <div className="relative w-full md:w-64">
-            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground" size={18} />
-            <Input
-              type="text"
-              placeholder="Search notes..."
-              className="w-full pl-10 pr-4 bg-background text-foreground"
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-            />
-          </div>
+      <div className="notes-actions">
+        <div className="flex space-x-2">
+          <Dialog>
+            <DialogTrigger asChild>
+              <Button className="flex items-center">
+                <Upload size={18} className="mr-2" />
+                Upload Notes
+              </Button>
+            </DialogTrigger>
+            <DialogContent>
+              <DialogHeader>
+                <DialogTitle>Upload Study Notes</DialogTitle>
+              </DialogHeader>
+              <form onSubmit={handleSubmitNotes} className="upload-form">
+                <div>
+                  <Label htmlFor="title">Note Title</Label>
+                  <Input id="title" placeholder="Enter a title for your notes" />
+                </div>
+                <div>
+                  <Label htmlFor="subject">Subject</Label>
+                  <Select>
+                    <SelectTrigger>
+                      <SelectValue placeholder="Select a subject" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      {subjects.filter(s => s !== 'All').map(subject => (
+                        <SelectItem key={subject} value={subject.toLowerCase()}>
+                          {subject}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                </div>
+                <div>
+                  <Label htmlFor="description">Description</Label>
+                  <Input id="description" placeholder="Brief description of your notes" />
+                </div>
+                <div className="upload-dropzone">
+                  <div className="upload-dropzone-icon">
+                    <FileText size={32} />
+                  </div>
+                  <p className="upload-dropzone-text">Drag and drop your file here</p>
+                  <p className="upload-dropzone-hint">Supports PDF, DOCX, TXT, and image files</p>
+                  <Input type="file" className="sr-only" />
+                </div>
+                <div className="flex justify-end space-x-2">
+                  <Button variant="outline" type="button">Cancel</Button>
+                  <Button type="submit">Upload</Button>
+                </div>
+              </form>
+            </DialogContent>
+          </Dialog>
         </div>
-
-        <div className="mb-6 border-b border-border">
-          <div className="flex space-x-6 overflow-x-auto pb-2">
-            {subjects.map((subject) => (
-              <button
-                key={subject}
-                className={`py-2 px-1 font-medium text-sm border-b-2 transition-colors ${
-                  activeSubject === subject
-                    ? 'border-primary text-primary'
-                    : 'border-transparent text-muted-foreground hover:text-foreground hover:border-border'
-                }`}
-                onClick={() => setActiveSubject(subject)}
-              >
-                {subject}
-              </button>
-            ))}
-          </div>
+        <div className="notes-search">
+          <Search className="notes-search-icon" size={18} />
+          <Input
+            type="text"
+            placeholder="Search notes..."
+            className="notes-search-input"
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+          />
         </div>
-
-        {filteredNotes.length > 0 ? (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {filteredNotes.map((note) => (
-              <NoteCard
-                key={note.id}
-                title={note.title}
-                subject={note.subject}
-                author={note.author}
-                preview={note.preview}
-                fileType={note.fileType}
-                onView={() => handleView(note.id)}
-                onDownload={() => handleDownload(note.id)}
-                onShare={() => handleShare(note.id)}
-                onCopyLink={() => handleCopyLink(note.id)}
-              />
-            ))}
-          </div>
-        ) : (
-          <div className="text-center py-12">
-            <FileText size={48} className="mx-auto text-muted-foreground mb-4" />
-            <h3 className="text-xl font-medium text-foreground mb-2">No notes found</h3>
-            <p className="text-muted-foreground">
-              {searchQuery
-                ? `No notes match your search "${searchQuery}"`
-                : `No notes available for ${activeSubject}`}
-            </p>
-          </div>
-        )}
       </div>
-    </AppLayout>
+
+      <div className="notes-subjects">
+        <div className="notes-subjects-tabs">
+          {subjects.map((subject) => (
+            <button
+              key={subject}
+              className={`notes-subject-tab ${
+                activeSubject === subject
+                  ? 'notes-subject-tab-active'
+                  : 'notes-subject-tab-inactive'
+              }`}
+              onClick={() => setActiveSubject(subject)}
+            >
+              {subject}
+            </button>
+          ))}
+        </div>
+      </div>
+
+      <div className="notes-empty">
+        <FileText size={48} className="notes-empty-icon" />
+        <h3 className="notes-empty-title">No notes found</h3>
+        <p className="notes-empty-message">
+          {searchQuery
+            ? `No notes match your search "${searchQuery}"`
+            : `No notes available for ${activeSubject}`}
+        </p>
+        <Button className="mt-4" onClick={() => {}}>Upload your first note</Button>
+      </div>
+    </div>
   );
 };
 

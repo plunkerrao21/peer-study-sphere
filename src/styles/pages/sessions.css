@@ -1,0 +1,41 @@
+
+/* Public Sessions page styles */
+.sessions-container {
+  @apply max-w-6xl mx-auto;
+}
+
+.sessions-header {
+  @apply mb-8;
+}
+
+.sessions-title {
+  @apply text-3xl font-bold text-foreground;
+}
+
+.sessions-subtitle {
+  @apply text-muted-foreground mt-2;
+}
+
+.sessions-actions {
+  @apply flex justify-between items-center mb-6;
+}
+
+.sessions-filters {
+  @apply flex items-center space-x-4;
+}
+
+.sessions-section {
+  @apply mb-10;
+}
+
+.sessions-section-title {
+  @apply text-xl font-semibold mb-5 text-foreground;
+}
+
+.sessions-grid {
+  @apply grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6;
+}
+
+.session-live-indicator {
+  @apply bg-red-500 text-white text-xs font-semibold rounded-full px-2 py-0.5 animate-pulse;
+}

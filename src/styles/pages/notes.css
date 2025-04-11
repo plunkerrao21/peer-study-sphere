@@ -1,0 +1,94 @@
+
+/* Notes page styles */
+.notes-container {
+  @apply max-w-6xl mx-auto;
+}
+
+.notes-header {
+  @apply mb-8;
+}
+
+.notes-title {
+  @apply text-3xl font-bold text-foreground;
+}
+
+.notes-subtitle {
+  @apply text-muted-foreground mt-2;
+}
+
+.notes-actions {
+  @apply flex flex-col md:flex-row justify-between md:items-center mb-6 space-y-4 md:space-y-0;
+}
+
+.notes-search {
+  @apply relative w-full md:w-64;
+}
+
+.notes-search-icon {
+  @apply absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground;
+}
+
+.notes-search-input {
+  @apply w-full pl-10 pr-4 bg-background text-foreground;
+}
+
+.notes-subjects {
+  @apply mb-6 border-b border-border;
+}
+
+.notes-subjects-tabs {
+  @apply flex space-x-6 overflow-x-auto pb-2;
+}
+
+.notes-subject-tab {
+  @apply py-2 px-1 font-medium text-sm border-b-2 transition-colors;
+}
+
+.notes-subject-tab-active {
+  @apply border-primary text-primary;
+}
+
+.notes-subject-tab-inactive {
+  @apply border-transparent text-muted-foreground hover:text-foreground hover:border-border;
+}
+
+.notes-grid {
+  @apply grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6;
+}
+
+.notes-empty {
+  @apply text-center py-12;
+}
+
+.notes-empty-icon {
+  @apply mx-auto text-muted-foreground mb-4;
+}
+
+.notes-empty-title {
+  @apply text-xl font-medium text-foreground mb-2;
+}
+
+.notes-empty-message {
+  @apply text-muted-foreground;
+}
+
+/* Upload dialog styles */
+.upload-form {
+  @apply space-y-4;
+}
+
+.upload-dropzone {
+  @apply border-2 border-dashed border-border rounded-lg p-8 text-center cursor-pointer hover:border-primary transition-colors;
+}
+
+.upload-dropzone-icon {
+  @apply mx-auto mb-2 text-muted-foreground;
+}
+
+.upload-dropzone-text {
+  @apply text-muted-foreground mb-1;
+}
+
+.upload-dropzone-hint {
+  @apply text-sm text-muted-foreground;
+}

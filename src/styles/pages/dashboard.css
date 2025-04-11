@@ -1,0 +1,29 @@
+
+/* Dashboard page styles */
+.dashboard-container {
+  @apply max-w-6xl mx-auto;
+}
+
+.dashboard-header {
+  @apply mb-8;
+}
+
+.dashboard-title {
+  @apply text-3xl font-bold text-foreground;
+}
+
+.dashboard-subtitle {
+  @apply text-muted-foreground mt-2;
+}
+
+.dashboard-cards {
+  @apply grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6;
+}
+
+.dashboard-section {
+  @apply mb-10;
+}
+
+.dashboard-section-title {
+  @apply text-xl font-semibold mb-5 text-foreground;
+}

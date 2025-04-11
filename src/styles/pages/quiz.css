@@ -1,0 +1,77 @@
+
+/* Quiz page styles */
+.quiz-container {
+  @apply min-h-screen bg-background flex flex-col;
+}
+
+.quiz-header {
+  @apply bg-card text-foreground border-b border-border p-4 flex justify-between items-center;
+}
+
+.quiz-title-container {
+  @apply flex-1;
+}
+
+.quiz-title {
+  @apply text-xl font-semibold;
+}
+
+.quiz-subtitle {
+  @apply text-sm text-muted-foreground;
+}
+
+.quiz-timer {
+  @apply flex items-center space-x-2 bg-primary/10 dark:bg-primary/20 text-primary px-3 py-1 rounded-full;
+}
+
+.quiz-progress {
+  @apply w-full bg-muted h-1;
+}
+
+.quiz-progress-bar {
+  @apply bg-primary h-1;
+}
+
+.quiz-content {
+  @apply flex-1 max-w-3xl mx-auto w-full p-8 py-12;
+}
+
+.quiz-question-number {
+  @apply text-sm text-muted-foreground mb-2;
+}
+
+.quiz-question {
+  @apply text-2xl font-semibold mb-8 text-foreground;
+}
+
+.quiz-options {
+  @apply space-y-4;
+}
+
+.quiz-option {
+  @apply border rounded-lg p-4 cursor-pointer transition-colors;
+}
+
+.quiz-option-selected {
+  @apply border-primary bg-primary/10 dark:bg-primary/20;
+}
+
+.quiz-option-default {
+  @apply border-border hover:border-primary/50;
+}
+
+.quiz-option-indicator {
+  @apply w-5 h-5 rounded-full border flex items-center justify-center mr-3;
+}
+
+.quiz-option-indicator-selected {
+  @apply border-primary bg-primary text-primary-foreground;
+}
+
+.quiz-option-indicator-default {
+  @apply border-muted-foreground;
+}
+
+.quiz-navigation {
+  @apply flex justify-between mt-8;
+}

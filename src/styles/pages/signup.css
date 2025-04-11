@@ -1,0 +1,29 @@
+
+/* Signup page styles */
+.signup-container {
+  @apply min-h-screen flex bg-background;
+}
+
+.signup-illustration {
+  @apply hidden lg:flex lg:w-1/2 bg-primary dark:bg-primary-900 p-12 flex-col justify-between;
+}
+
+.signup-form-container {
+  @apply w-full lg:w-1/2 flex items-center justify-center p-8 bg-background;
+}
+
+.signup-form {
+  @apply w-full max-w-md space-y-6;
+}
+
+.signup-heading {
+  @apply text-center mb-10;
+}
+
+.signup-title {
+  @apply text-3xl font-bold text-primary mb-2;
+}
+
+.signup-subtitle {
+  @apply text-muted-foreground;
+}

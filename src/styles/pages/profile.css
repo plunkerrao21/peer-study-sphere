@@ -1,0 +1,77 @@
+
+/* Profile page styles */
+.profile-container {
+  @apply max-w-4xl mx-auto p-6;
+}
+
+.profile-header {
+  @apply flex flex-col md:flex-row items-center md:items-start gap-6 mb-8;
+}
+
+.profile-avatar {
+  @apply w-32 h-32 rounded-full border-4 border-primary flex-shrink-0;
+}
+
+.profile-info {
+  @apply text-center md:text-left;
+}
+
+.profile-name {
+  @apply text-2xl font-bold text-foreground;
+}
+
+.profile-username {
+  @apply text-muted-foreground;
+}
+
+.profile-bio {
+  @apply mt-2 text-foreground;
+}
+
+.profile-stats {
+  @apply flex gap-6 mt-4 justify-center md:justify-start;
+}
+
+.profile-stat {
+  @apply text-center;
+}
+
+.profile-stat-value {
+  @apply text-xl font-bold text-foreground;
+}
+
+.profile-stat-label {
+  @apply text-sm text-muted-foreground;
+}
+
+.profile-tabs {
+  @apply border-b border-border mb-6;
+}
+
+.profile-tab {
+  @apply py-2 px-4 text-sm font-medium border-b-2 transition-colors;
+}
+
+.profile-tab-active {
+  @apply border-primary text-primary;
+}
+
+.profile-tab-inactive {
+  @apply border-transparent text-muted-foreground hover:text-foreground hover:border-border;
+}
+
+.avatar-selection {
+  @apply grid grid-cols-3 sm:grid-cols-4 md:grid-cols-5 gap-4 my-4;
+}
+
+.avatar-option {
+  @apply w-16 h-16 rounded-full border-2 cursor-pointer transition-all;
+}
+
+.avatar-option-selected {
+  @apply border-primary;
+}
+
+.avatar-option-default {
+  @apply border-border;
+}

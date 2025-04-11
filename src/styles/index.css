@@ -3,5 +3,18 @@
 @import './base.css';
 @import './components.css';
 @import './navigation.css';
-@import './custom.css';
 @import './utilities.css';
+
+/* Page-specific styles */
+@import './pages/login.css';
+@import './pages/signup.css';
+@import './pages/dashboard.css';
+@import './pages/notes.css';
+@import './pages/quizzes.css';
+@import './pages/quiz.css';
+@import './pages/video-session.css';
+@import './pages/sessions.css';
+@import './pages/profile.css';
+
+/* Any custom styles that don't fit elsewhere */
+@import './custom.css';
