@@ -2,6 +2,7 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Clock } from 'lucide-react';
+import { Button } from '@/components/ui/button';
 
 const Quiz = () => {
   const [currentQuestion, setCurrentQuestion] = useState(0);
@@ -103,19 +104,19 @@ const Quiz = () => {
   return (
     <div className="min-h-screen bg-background flex flex-col">
       {/* Quiz Header */}
-      <div className="bg-white border-b p-4 flex justify-between items-center">
+      <div className="bg-card text-foreground border-b border-border p-4 flex justify-between items-center">
         <div>
           <h1 className="text-xl font-semibold">{quiz.title}</h1>
-          <p className="text-sm text-gray-600">{quiz.subject}</p>
+          <p className="text-sm text-muted-foreground">{quiz.subject}</p>
         </div>
-        <div className="flex items-center space-x-2 bg-primary-50 text-primary px-3 py-1 rounded-full">
+        <div className="flex items-center space-x-2 bg-primary/10 dark:bg-primary/20 text-primary px-3 py-1 rounded-full">
           <Clock size={16} />
           <span className="font-medium">12:45</span>
         </div>
       </div>
 
       {/* Progress Bar */}
-      <div className="w-full bg-gray-200 h-1">
+      <div className="w-full bg-muted h-1">
         <div
           className="bg-primary h-1"
           style={{ width: `${((currentQuestion + 1) / quiz.questions.length) * 100}%` }}
@@ -125,10 +126,10 @@ const Quiz = () => {
       {/* Quiz Content */}
       <div className="flex-1 max-w-3xl mx-auto w-full p-8 py-12">
         <div className="mb-8">
-          <p className="text-sm text-gray-500 mb-2">
+          <p className="text-sm text-muted-foreground mb-2">
             Question {currentQuestion + 1} of {quiz.questions.length}
           </p>
-          <h2 className="text-2xl font-semibold mb-8">{question.text}</h2>
+          <h2 className="text-2xl font-semibold mb-8 text-foreground">{question.text}</h2>
 
           <div className="space-y-4">
             {question.options.map((option, index) => (
@@ -136,8 +137,8 @@ const Quiz = () => {
                 key={index}
                 className={`border rounded-lg p-4 cursor-pointer transition-colors ${
                   selectedAnswer === index
-                    ? 'border-primary bg-primary-50'
-                    : 'border-gray-200 hover:border-gray-300'
+                    ? 'border-primary bg-primary/10 dark:bg-primary/20'
+                    : 'border-border hover:border-primary/50'
                 }`}
                 onClick={() => handleAnswerSelect(index)}
               >
@@ -145,15 +146,15 @@ const Quiz = () => {
                   <div
                     className={`w-5 h-5 rounded-full border flex items-center justify-center mr-3 ${
                       selectedAnswer === index
-                        ? 'border-primary bg-primary text-white'
-                        : 'border-gray-300'
+                        ? 'border-primary bg-primary text-primary-foreground'
+                        : 'border-muted-foreground'
                     }`}
                   >
                     {selectedAnswer === index && (
-                      <div className="w-2 h-2 bg-white rounded-full"></div>
+                      <div className="w-2 h-2 bg-primary-foreground rounded-full"></div>
                     )}
                   </div>
-                  <span>{option}</span>
+                  <span className="text-foreground">{option}</span>
                 </div>
               </div>
             ))}
@@ -161,24 +162,26 @@ const Quiz = () => {
         </div>
 
         <div className="flex justify-between mt-8">
-          <button
+          <Button
             onClick={handlePreviousQuestion}
             disabled={currentQuestion === 0}
-            className={`btn ${
-              currentQuestion === 0 ? 'bg-gray-200 text-gray-500 cursor-not-allowed' : 'btn-outline'
-            }`}
+            variant={currentQuestion === 0 ? "outline" : "default"}
+            className={currentQuestion === 0 ? 
+              "text-muted-foreground bg-muted cursor-not-allowed" : 
+              "hover:text-primary-foreground"
+            }
           >
             Previous
-          </button>
+          </Button>
           
           {currentQuestion < quiz.questions.length - 1 ? (
-            <button onClick={handleNextQuestion} className="btn btn-primary">
+            <Button onClick={handleNextQuestion} variant="default">
               Next
-            </button>
+            </Button>
           ) : (
-            <button onClick={handleSubmit} className="btn btn-primary">
+            <Button onClick={handleSubmit} variant="default">
               Submit Quiz
-            </button>
+            </Button>
           )}
         </div>
       </div>

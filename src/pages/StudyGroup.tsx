@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Send, Search, Bell, User, Video, Settings, Plus, FileText, Book } from 'lucide-react';
@@ -17,38 +16,26 @@ const StudyGroup = () => {
     }
   };
 
-  // Sample data
+  // Sample data - in a real app, this would come from an API
   const group = {
     name: 'Physics Study Group',
     members: [
       { id: 1, name: 'Alex Johnson', role: 'Admin', online: true },
       { id: 2, name: 'Sarah Williams', role: 'Member', online: true },
-      { id: 3, name: 'Michael Brown', role: 'Member', online: false },
-      { id: 4, name: 'Emma Davis', role: 'Member', online: false },
-      { id: 5, name: 'Robert Wilson', role: 'Member', online: false },
     ],
     messages: [
       { id: 1, sender: 'Alex Johnson', content: 'Hey everyone! Welcome to our Physics study group!', time: '10:15 AM' },
       { id: 2, sender: 'Sarah Williams', content: 'Thanks for creating this. I\'ve been struggling with the latest assignment.', time: '10:18 AM' },
-      { id: 3, sender: 'Michael Brown', content: 'Same here. Specifically with problem #3 on quantum mechanics.', time: '10:20 AM' },
-      { id: 4, sender: 'Alex Johnson', content: 'Let\'s schedule a video session to go through it together. How about tomorrow at 4 PM?', time: '10:22 AM' },
-      { id: 5, sender: 'Sarah Williams', content: 'That works for me!', time: '10:25 AM' },
-      { id: 6, sender: 'You', content: 'I can join too. I\'ve already solved the first part of that problem.', time: '10:30 AM' },
     ],
     channels: [
       { id: 1, name: 'general', unread: 0 },
       { id: 2, name: 'assignments', unread: 3 },
-      { id: 3, name: 'resources', unread: 0 },
-      { id: 4, name: 'off-topic', unread: 2 },
     ],
     resources: [
       { id: 1, name: 'Quantum Mechanics Notes', type: 'PDF', added: '2 days ago' },
-      { id: 2, name: 'Physics Formula Sheet', type: 'PDF', added: '1 week ago' },
-      { id: 3, name: 'Practice Problems', type: 'DOCX', added: '3 days ago' },
     ],
     upcomingSessions: [
       { id: 1, title: 'Quantum Mechanics Review', date: 'Tomorrow, 4:00 PM' },
-      { id: 2, title: 'Exam Preparation', date: 'Friday, 5:30 PM' },
     ],
   };
 
@@ -58,7 +45,7 @@ const StudyGroup = () => {
       <header className="bg-card border-b border-border px-6 py-3 flex items-center justify-between">
         <div className="flex items-center space-x-4">
           <button 
-            className="text-primary hover:bg-primary-foreground/10 p-2 rounded-md"
+            className="text-primary bg-primary-50 dark:bg-primary/20 hover:bg-primary hover:text-primary-foreground p-2 rounded-md"
             onClick={() => navigate('/dashboard')}
           >
             Back to Dashboard
@@ -81,14 +68,14 @@ const StudyGroup = () => {
       {/* Main Content */}
       <div className="flex-1 flex overflow-hidden">
         {/* Left Sidebar - Group List */}
-        <div className="w-64 bg-muted/30 border-r border-border flex flex-col">
+        <div className="w-64 bg-muted/30 dark:bg-muted/10 border-r border-border flex flex-col">
           <div className="p-4">
             <div className="relative">
               <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground" size={16} />
               <Input
                 type="text"
                 placeholder="Search channels"
-                className="w-full pl-10 pr-4 py-2 text-sm"
+                className="w-full pl-10 pr-4 py-2 text-sm bg-background text-foreground"
               />
             </div>
           </div>
@@ -180,29 +167,27 @@ const StudyGroup = () => {
             ))}
           </div>
 
-          {/* Message Input */}
-          <div className="p-4 border-t border-border">
-            <form onSubmit={handleSendMessage} className="flex items-center space-x-2">
-              <Input
-                type="text"
-                value={message}
-                onChange={(e) => setMessage(e.target.value)}
-                placeholder="Type your message..."
-                className="flex-1 rounded-lg"
-              />
-              <Button
-                type="submit"
-                className="flex items-center"
-              >
-                <Send size={18} className="mr-2" />
-                Send
-              </Button>
-            </form>
+          {/* Message Input - Floating style */}
+          <div className="chat-message-input">
+            <Input
+              type="text"
+              value={message}
+              onChange={(e) => setMessage(e.target.value)}
+              placeholder="Type your message..."
+              className="flex-1 bg-background text-foreground border-none focus:ring-0"
+            />
+            <Button
+              onClick={(e) => handleSendMessage(e as any)}
+              className="rounded-full px-3"
+              size="sm"
+            >
+              <Send size={18} />
+            </Button>
           </div>
         </div>
 
         {/* Right Sidebar - Members & Tools */}
-        <div className="w-64 bg-muted/30 border-l border-border flex flex-col">
+        <div className="w-64 bg-muted/30 dark:bg-muted/10 border-l border-border flex flex-col">
           <div className="p-4 border-b border-border">
             <h2 className="text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-4">Members ({group.members.length})</h2>
             <ul className="space-y-2">

@@ -2,17 +2,20 @@
 import React, { useState } from 'react';
 import AppLayout from '../components/layout/AppLayout';
 import NoteCard from '../components/ui/NoteCard';
-import { Search, Upload, Plus, FileText } from 'lucide-react';
+import { Search, Upload, FileText } from 'lucide-react';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
+import { toast } from '@/hooks/use-toast';
 
 const Notes = () => {
   const [searchQuery, setSearchQuery] = useState('');
   const [activeSubject, setActiveSubject] = useState('All');
+  const [notes, setNotes] = useState<any[]>([]);
 
   const subjects = ['All', 'Physics', 'Mathematics', 'Computer Science', 'Chemistry', 'Literature'];
   
-  const notes = [
+  // Placeholder for demonstration - in a real app, this would fetch from an API
+  const placeholderNotes = [
     {
       id: 1,
       title: 'Quantum Mechanics: Wave Functions',
@@ -29,39 +32,17 @@ const Notes = () => {
       preview: 'Comprehensive guide to various integration techniques, including substitution, parts, partial fractions, and trigonometric integrals.',
       fileType: 'PDF',
     },
-    {
-      id: 3,
-      title: 'Data Structures & Algorithms',
-      subject: 'Computer Science',
-      author: 'Michael Brown',
-      preview: 'Notes on common data structures (arrays, linked lists, trees, graphs) and algorithms (sorting, searching, dynamic programming).',
-      fileType: 'PDF',
-    },
-    {
-      id: 4,
-      title: 'Organic Chemistry: Reaction Mechanisms',
-      subject: 'Chemistry',
-      author: 'Emma Davis',
-      preview: 'Detailed explanation of reaction mechanisms in organic chemistry, including substitution, elimination, addition, and rearrangement reactions.',
-      fileType: 'DOCX',
-    },
-    {
-      id: 5,
-      title: 'Shakespeare\'s Hamlet: Critical Analysis',
-      subject: 'Literature',
-      author: 'Robert Wilson',
-      preview: 'Critical analysis of themes, characters, and literary devices in Shakespeare\'s Hamlet. Includes quotes and interpretations.',
-      fileType: 'PDF',
-    },
-    {
-      id: 6,
-      title: 'Statistics: Hypothesis Testing',
-      subject: 'Mathematics',
-      author: 'Jennifer Adams',
-      preview: 'Comprehensive notes on hypothesis testing, including null and alternative hypotheses, p-values, and various statistical tests.',
-      fileType: 'PDF',
-    },
   ];
+
+  // Simulate loading placeholders for demonstration
+  React.useEffect(() => {
+    // Simulate API call with a short delay
+    const timer = setTimeout(() => {
+      setNotes(placeholderNotes);
+    }, 500);
+    
+    return () => clearTimeout(timer);
+  }, []);
 
   const filteredNotes = notes.filter(note => {
     return (
@@ -74,10 +55,45 @@ const Notes = () => {
 
   const handleView = (id: number) => {
     console.log(`Viewing note ${id}`);
+    // This would open the note viewer in a real application
   };
 
   const handleDownload = (id: number) => {
     console.log(`Downloading note ${id}`);
+    toast({
+      title: "Download started",
+      description: `Your note is being downloaded`,
+      duration: 3000,
+    });
+  };
+  
+  const handleShare = (id: number) => {
+    // In a real app, this would generate a sharing dialog or API call
+    toast({
+      title: "Note shared",
+      description: "A sharing link has been generated and sent",
+      duration: 3000,
+    });
+  };
+  
+  const handleCopyLink = (id: number) => {
+    // In a real app, this would copy a real link to the clipboard
+    const dummyLink = `https://peerlearn.com/notes/${id}`;
+    navigator.clipboard.writeText(dummyLink);
+    toast({
+      title: "Link copied",
+      description: "Note link copied to clipboard",
+      duration: 3000,
+    });
+  };
+
+  const handleUpload = () => {
+    // This would trigger a file upload dialog in a real app
+    toast({
+      title: "Upload feature",
+      description: "File upload dialog would open here",
+      duration: 3000,
+    });
   };
 
   return (
@@ -92,13 +108,9 @@ const Notes = () => {
 
         <div className="flex flex-col md:flex-row justify-between md:items-center mb-6 space-y-4 md:space-y-0">
           <div className="flex space-x-2">
-            <Button className="flex items-center">
+            <Button className="flex items-center" onClick={handleUpload}>
               <Upload size={18} className="mr-2" />
               Upload Notes
-            </Button>
-            <Button variant="outline" className="flex items-center">
-              <Plus size={18} className="mr-2" />
-              Create Note
             </Button>
           </div>
           <div className="relative w-full md:w-64">
@@ -106,7 +118,7 @@ const Notes = () => {
             <Input
               type="text"
               placeholder="Search notes..."
-              className="w-full pl-10 pr-4"
+              className="w-full pl-10 pr-4 bg-background text-foreground"
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
             />
@@ -143,6 +155,8 @@ const Notes = () => {
                 fileType={note.fileType}
                 onView={() => handleView(note.id)}
                 onDownload={() => handleDownload(note.id)}
+                onShare={() => handleShare(note.id)}
+                onCopyLink={() => handleCopyLink(note.id)}
               />
             ))}
           </div>

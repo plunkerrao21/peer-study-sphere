@@ -12,11 +12,11 @@ const Navbar = () => {
   };
 
   return (
-    <nav className="w-full bg-background border-b border-border px-6 py-3 flex items-center justify-between">
+    <nav className="w-full bg-card dark:bg-card border-b border-border px-6 py-3 flex items-center justify-between">
       <div className="flex items-center space-x-8">
         <Link to="/dashboard" className="flex items-center space-x-2">
           <div className="w-8 h-8 rounded-full bg-primary flex items-center justify-center">
-            <span className="text-white font-bold">P</span>
+            <span className="text-primary-foreground font-bold">P</span>
           </div>
           <span className="text-xl font-bold text-primary">PeerLearn</span>
         </Link>

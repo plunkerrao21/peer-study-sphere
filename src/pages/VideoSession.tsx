@@ -1,7 +1,7 @@
 
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Mic, MicOff, Camera, CameraOff, Phone, MessageSquare, User, Users, Link, Copy, Check } from 'lucide-react';
+import { Mic, MicOff, Camera, CameraOff, Phone, MessageSquare, User, Users, Link, Copy, Check, Video, X, MonitorSmartphone } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
@@ -10,17 +10,16 @@ import {
   DialogContent, 
   DialogHeader, 
   DialogTitle,
-  DialogTrigger
+  DialogTrigger,
+  DialogDescription,
+  DialogFooter
 } from '@/components/ui/dialog';
 import { toast } from '@/hooks/use-toast';
 
-// Mock friends data - in a real app, this would come from your backend
+// Mock data - in a real app, this would come from an API
 const mockFriends = [
   { id: 1, name: 'Alex Johnson', username: 'alexj', avatar: 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1170&q=80' },
   { id: 2, name: 'Sarah Williams', username: 'sarahw', avatar: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=687&q=80' },
-  { id: 3, name: 'Michael Brown', username: 'mikeb', avatar: 'https://images.unsplash.com/photo-1580489944761-15a19d654956?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=761&q=80' },
-  { id: 4, name: 'Emma Davis', username: 'emmad', avatar: 'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1170&q=80' },
-  { id: 5, name: 'David Wilson', username: 'davidw', avatar: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=687&q=80' },
 ];
 
 const VideoSession = () => {
@@ -30,16 +29,34 @@ const VideoSession = () => {
   const [inviteDialog, setInviteDialog] = useState(false);
   const [participants, setParticipants] = useState([
     { id: 1, name: 'You', isSelf: true },
-    { id: 2, name: 'Alex Johnson', avatar: 'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1170&q=80' }
   ]);
   const [linkCopied, setLinkCopied] = useState(false);
   const navigate = useNavigate();
+  
+  // Screen recording states
+  const [recordingDialog, setRecordingDialog] = useState(false);
+  const [isRecording, setIsRecording] = useState(false);
+  const [recordingType, setRecordingType] = useState<'screen' | 'camera' | null>(null);
+  const mediaRecorderRef = useRef<MediaRecorder | null>(null);
+  const recordedChunksRef = useRef<BlobPart[]>([]);
+  const [recordingTime, setRecordingTime] = useState(0);
+  const timerRef = useRef<number | null>(null);
+  
+  // End session confirmation
+  const [endSessionDialog, setEndSessionDialog] = useState(false);
 
   const toggleMic = () => setMicEnabled(!micEnabled);
   const toggleCamera = () => setCameraEnabled(!cameraEnabled);
   const toggleChat = () => setChatOpen(!chatOpen);
   
   const endCall = () => {
+    setEndSessionDialog(true);
+  };
+  
+  const confirmEndCall = () => {
+    if (isRecording) {
+      stopRecording();
+    }
     navigate('/sessions');
   };
 
@@ -74,6 +91,119 @@ const VideoSession = () => {
       }, 2000);
     }
   };
+  
+  // Screen recording functionality
+  const startRecording = async (type: 'screen' | 'camera') => {
+    try {
+      let stream: MediaStream;
+      
+      if (type === 'screen') {
+        stream = await navigator.mediaDevices.getDisplayMedia({
+          video: { cursor: 'always' },
+          audio: true
+        });
+      } else {
+        stream = await navigator.mediaDevices.getUserMedia({
+          video: true,
+          audio: true
+        });
+      }
+      
+      // Set up recording
+      const mediaRecorder = new MediaRecorder(stream);
+      mediaRecorderRef.current = mediaRecorder;
+      
+      mediaRecorder.ondataavailable = (event) => {
+        if (event.data.size > 0) {
+          recordedChunksRef.current.push(event.data);
+        }
+      };
+      
+      mediaRecorder.onstop = () => {
+        const recordedBlob = new Blob(recordedChunksRef.current, { type: 'video/webm' });
+        const url = URL.createObjectURL(recordedBlob);
+        
+        // In a real app, you might want to save this video to a server
+        // For now, we'll just download it
+        const a = document.createElement('a');
+        a.style.display = 'none';
+        a.href = url;
+        a.download = `recording-${new Date().toISOString()}.webm`;
+        document.body.appendChild(a);
+        a.click();
+        
+        // Clean up
+        setTimeout(() => {
+          document.body.removeChild(a);
+          URL.revokeObjectURL(url);
+        }, 100);
+        
+        recordedChunksRef.current = [];
+        setIsRecording(false);
+        setRecordingType(null);
+        
+        if (timerRef.current) {
+          clearInterval(timerRef.current);
+          timerRef.current = null;
+        }
+        setRecordingTime(0);
+        
+        toast({
+          title: "Recording saved",
+          description: "Your recording has been saved to your downloads",
+          duration: 3000,
+        });
+      };
+      
+      // Start recording
+      mediaRecorder.start();
+      setIsRecording(true);
+      setRecordingType(type);
+      
+      // Start timer
+      timerRef.current = window.setInterval(() => {
+        setRecordingTime(prev => prev + 1);
+      }, 1000);
+      
+      // Set up listener for stream ending (user clicks "Stop sharing")
+      stream.getVideoTracks()[0].onended = () => {
+        stopRecording();
+      };
+      
+      setRecordingDialog(false);
+      
+      toast({
+        title: `${type === 'screen' ? 'Screen' : 'Camera'} recording started`,
+        description: "Click the stop button when you're done",
+        duration: 3000,
+      });
+      
+    } catch (err) {
+      console.error("Error starting recording:", err);
+      toast({
+        title: "Recording failed",
+        description: "Failed to start recording. Please check permissions.",
+        variant: "destructive",
+        duration: 3000,
+      });
+    }
+  };
+  
+  const stopRecording = () => {
+    if (mediaRecorderRef.current && isRecording) {
+      mediaRecorderRef.current.stop();
+      
+      // Stop all tracks in the stream
+      mediaRecorderRef.current.stream.getTracks().forEach(track => track.stop());
+    }
+  };
+  
+  // Format recording time as mm:ss
+  const formatTime = (seconds: number): string => {
+    const mins = Math.floor(seconds / 60);
+    const secs = seconds % 60;
+    return `${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
+  };
 
   return (
     <div className="h-screen bg-background flex flex-col">
@@ -84,9 +214,19 @@ const VideoSession = () => {
           <p className="text-sm text-muted-foreground">Hosted by Alex Johnson • {participants.length} Participants</p>
         </div>
         <div className="flex items-center space-x-3">
+          <Button 
+            variant="default" 
+            size="sm" 
+            className="flex items-center gap-2"
+            onClick={() => setRecordingDialog(true)}
+          >
+            <Video size={16} />
+            Record
+          </Button>
+          
           <Dialog>
             <DialogTrigger asChild>
-              <Button variant="default" size="sm" className="flex items-center gap-2">
+              <Button variant="outline" size="sm" className="flex items-center gap-2">
                 <Users size={16} />
                 Invite
               </Button>
@@ -135,12 +275,24 @@ const VideoSession = () => {
               </div>
             </DialogContent>
           </Dialog>
-          
-          <Button variant="ghost" size="icon" className="rounded-full" onClick={() => setInviteDialog(true)}>
-            <Users size={20} />
-          </Button>
         </div>
       </div>
+      
+      {/* Recording indicator */}
+      {isRecording && (
+        <div className="screen-recording-control">
+          <div className="recording-indicator"></div>
+          <span className="text-sm text-red-500 font-medium mr-2">REC {formatTime(recordingTime)}</span>
+          <Button 
+            size="sm" 
+            variant="outline" 
+            onClick={stopRecording}
+            className="h-7 px-2"
+          >
+            <X size={16} className="text-red-500" />
+          </Button>
+        </div>
+      )}
       
       {/* Main Content */}
       <div className="flex-1 flex overflow-hidden">
@@ -186,28 +338,17 @@ const VideoSession = () => {
               Chat
             </div>
             <div className="flex-1 overflow-y-auto p-4 space-y-4">
-              {[1, 2, 3, 4, 5].map((msg) => (
-                <div key={msg} className="text-sm">
-                  <p className="text-muted-foreground font-medium mb-1">
-                    {['You', 'Alex Johnson', 'Sarah Williams'][msg % 3]}
-                  </p>
-                  <p className="text-foreground">
-                    {[
-                      'Has anyone covered the homework from chapter 7?',
-                      'Yes, I finished it yesterday.',
-                      'I found problem #5 really challenging.',
-                      'Let me explain how I approached it...',
-                      'That makes sense, thanks for the explanation!'
-                    ][msg - 1]}
-                  </p>
-                </div>
-              ))}
+              <div className="text-center text-muted-foreground py-8">
+                <MessageSquare size={40} className="mx-auto mb-2 opacity-20" />
+                <p>No messages yet</p>
+                <p className="text-sm">Start the conversation</p>
+              </div>
             </div>
             <div className="p-4 border-t border-border">
               <Input
                 type="text"
                 placeholder="Type a message..."
-                className="w-full bg-muted text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary"
+                className="w-full bg-background text-foreground"
               />
             </div>
           </div>
@@ -253,44 +394,61 @@ const VideoSession = () => {
         </button>
       </div>
 
-      {/* Participants Dialog */}
-      <Dialog open={inviteDialog} onOpenChange={setInviteDialog}>
+      {/* Record Session Dialog */}
+      <Dialog open={recordingDialog} onOpenChange={setRecordingDialog}>
         <DialogContent className="sm:max-w-md">
           <DialogHeader>
-            <DialogTitle>Session Participants</DialogTitle>
+            <DialogTitle>Record Session</DialogTitle>
+            <DialogDescription>
+              Choose what you want to record
+            </DialogDescription>
           </DialogHeader>
-          <div className="py-4">
-            <div className="space-y-3">
-              {participants.map(participant => (
-                <div key={participant.id} className="flex items-center gap-3 p-2">
-                  <Avatar>
-                    {participant.avatar ? (
-                      <AvatarImage src={participant.avatar} alt={participant.name} />
-                    ) : (
-                      <AvatarFallback>{participant.name.charAt(0)}</AvatarFallback>
-                    )}
-                  </Avatar>
-                  <div>
-                    <p className="font-medium text-foreground">
-                      {participant.name} {participant.isSelf && "(You)"}
-                    </p>
-                  </div>
-                </div>
-              ))}
-            </div>
+          <div className="grid grid-cols-2 gap-4 pt-4">
+            <button
+              onClick={() => startRecording('screen')}
+              className="flex flex-col items-center p-6 border border-border rounded-lg hover:border-primary hover:bg-primary/5 transition-colors"
+            >
+              <MonitorSmartphone size={40} className="mb-2 text-primary" />
+              <span className="font-medium text-foreground">Screen + Audio</span>
+              <span className="text-xs text-muted-foreground mt-1">Record your screen with audio</span>
+            </button>
             
-            <div className="mt-6 pt-4 border-t border-border">
-              <p className="text-sm text-muted-foreground mb-2">Share this link to invite more friends:</p>
-              <div className="flex items-center gap-2">
-                <div className="flex-1 p-2 bg-muted rounded text-sm truncate text-foreground">
-                  {sessionLink}
-                </div>
-                <Button size="icon" variant="outline" onClick={copySessionLink}>
-                  {linkCopied ? <Check size={18} /> : <Copy size={18} />}
-                </Button>
-              </div>
-            </div>
+            <button
+              onClick={() => startRecording('camera')}
+              className="flex flex-col items-center p-6 border border-border rounded-lg hover:border-primary hover:bg-primary/5 transition-colors"
+            >
+              <Video size={40} className="mb-2 text-primary" />
+              <span className="font-medium text-foreground">Camera + Audio</span>
+              <span className="text-xs text-muted-foreground mt-1">Record your webcam with audio</span>
+            </button>
           </div>
+          <DialogFooter className="flex justify-between mt-4 gap-2">
+            <Button variant="outline" onClick={() => setRecordingDialog(false)}>Cancel</Button>
+            <div className="text-xs text-muted-foreground">
+              Recordings will be saved to your downloads
+            </div>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
+      
+      {/* End Session Confirmation Dialog */}
+      <Dialog open={endSessionDialog} onOpenChange={setEndSessionDialog}>
+        <DialogContent className="sm:max-w-md">
+          <DialogHeader>
+            <DialogTitle>End Session</DialogTitle>
+            <DialogDescription>
+              Are you sure you want to end this session?
+              {isRecording && (
+                <div className="mt-2 p-2 bg-destructive/10 border border-destructive rounded text-sm text-destructive">
+                  Note: Your recording will be saved before ending the session.
+                </div>
+              )}
+            </DialogDescription>
+          </DialogHeader>
+          <DialogFooter className="flex gap-2 mt-4">
+            <Button variant="outline" onClick={() => setEndSessionDialog(false)}>Cancel</Button>
+            <Button variant="destructive" onClick={confirmEndCall}>End Session</Button>
+          </DialogFooter>
         </DialogContent>
       </Dialog>
     </div>

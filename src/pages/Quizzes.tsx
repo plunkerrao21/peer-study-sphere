@@ -1,17 +1,21 @@
 
-import React from 'react';
+import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import AppLayout from '../components/layout/AppLayout';
 import QuizCard from '../components/ui/QuizCard';
-import { Search, Plus } from 'lucide-react';
+import { Search } from 'lucide-react';
+import { Input } from '@/components/ui/input';
+import { Button } from '@/components/ui/button';
 
 const Quizzes = () => {
   const navigate = useNavigate();
+  const [searchQuery, setSearchQuery] = useState('');
   
   const handleStartQuiz = () => {
     navigate('/quiz');
   };
 
+  // Placeholder quizzes data
   const quizzes = [
     {
       id: 1,
@@ -37,31 +41,13 @@ const Quizzes = () => {
       difficulty: 'Easy' as const,
       subject: 'Computer Science',
     },
-    {
-      id: 4,
-      title: 'Organic Chemistry: Naming Compounds',
-      questionsCount: 12,
-      time: '15 mins',
-      difficulty: 'Medium' as const,
-      subject: 'Chemistry',
-    },
-    {
-      id: 5,
-      title: 'Shakespeare\'s Works and Themes',
-      questionsCount: 10,
-      time: '15 mins',
-      difficulty: 'Medium' as const,
-      subject: 'Literature',
-    },
-    {
-      id: 6,
-      title: 'Statistical Hypothesis Testing',
-      questionsCount: 15,
-      time: '20 mins',
-      difficulty: 'Hard' as const,
-      subject: 'Mathematics',
-    },
   ];
+  
+  // Filter quizzes based on search query
+  const filteredQuizzes = quizzes.filter(quiz => 
+    quiz.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+    quiz.subject.toLowerCase().includes(searchQuery.toLowerCase())
+  );
 
   return (
     <AppLayout>
@@ -75,20 +61,18 @@ const Quizzes = () => {
 
         <div className="flex flex-col md:flex-row justify-between md:items-center mb-6 space-y-4 md:space-y-0">
           <div className="flex space-x-2">
-            <button className="btn btn-primary flex items-center">
-              <Plus size={18} className="mr-2" />
-              Create Quiz
-            </button>
-            <button className="btn btn-outline">
+            <Button variant="outline" className="hover:text-primary-foreground">
               My Quizzes
-            </button>
+            </Button>
           </div>
           <div className="relative w-full md:w-64">
             <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground" size={18} />
-            <input
+            <Input
               type="text"
               placeholder="Search quizzes..."
-              className="w-full pl-10 pr-4 py-2 border rounded-lg bg-background text-foreground focus:outline-none focus:ring-2 focus:ring-primary border-input"
+              className="w-full pl-10 pr-4 bg-background text-foreground"
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
             />
           </div>
         </div>
@@ -96,7 +80,7 @@ const Quizzes = () => {
         <div className="mb-8">
           <h2 className="text-xl font-semibold mb-5 text-foreground">Popular Quizzes</h2>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-            {quizzes.slice(0, 4).map((quiz) => (
+            {filteredQuizzes.slice(0, 4).map((quiz) => (
               <QuizCard
                 key={quiz.id}
                 title={quiz.title}
@@ -113,7 +97,7 @@ const Quizzes = () => {
         <div>
           <h2 className="text-xl font-semibold mb-5 text-foreground">All Quizzes</h2>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-            {quizzes.map((quiz) => (
+            {filteredQuizzes.map((quiz) => (
               <QuizCard
                 key={quiz.id}
                 title={quiz.title}

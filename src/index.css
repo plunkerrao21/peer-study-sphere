@@ -84,11 +84,11 @@
   }
   
   .btn-primary {
-    @apply bg-primary text-primary-foreground hover:bg-primary-700;
+    @apply bg-primary text-primary-foreground hover:bg-primary/90;
   }
   
   .btn-secondary {
-    @apply bg-secondary text-secondary-foreground hover:bg-secondary/90;
+    @apply bg-secondary text-secondary-foreground hover:bg-secondary/80;
   }
   
   .btn-outline {
@@ -112,6 +112,39 @@
   }
   
   .chat-message-input {
-    @apply fixed bottom-6 left-1/2 transform -translate-x-1/2 w-11/12 max-w-3xl z-10 flex items-center gap-2 p-2 rounded-full bg-background border border-border shadow-lg;
+    @apply fixed bottom-6 left-1/2 transform -translate-x-1/2 w-11/12 max-w-3xl z-10 flex items-center gap-2 p-2 rounded-full bg-card border border-border shadow-lg;
   }
+  
+  /* Custom avatar styles */
+  .avatar-selection {
+    @apply grid grid-cols-3 sm:grid-cols-4 md:grid-cols-5 gap-4;
+  }
+  
+  .avatar-option {
+    @apply w-16 h-16 rounded-full border-2 cursor-pointer transition-all;
+  }
+  
+  .avatar-option-selected {
+    @apply border-primary;
+  }
+  
+  .avatar-option-default {
+    @apply border-border;
+  }
+  
+  /* Screen recording styles */
+  .screen-recording-control {
+    @apply fixed top-4 right-4 z-50 flex items-center space-x-2 bg-card rounded-lg p-2 shadow-lg border border-border;
+  }
+  
+  .recording-indicator {
+    @apply w-3 h-3 rounded-full bg-red-500 animate-pulse;
+  }
+  
+  /* Styles folder organization */
+  /* These are just examples to demonstrate folder organization */
+  .folder-ui-elements {}
+  .folder-layouts {}
+  .folder-pages {}
+  .folder-animations {}
 }

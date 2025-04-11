@@ -1,0 +1,32 @@
+
+/* Component styles */
+@tailwind components;
+
+@layer components {
+  /* Button styles */
+  .btn {
+    @apply py-2 px-4 rounded-md font-medium transition-colors;
+  }
+  
+  .btn-primary {
+    @apply bg-primary text-primary-foreground hover:bg-primary/90;
+  }
+  
+  .btn-secondary {
+    @apply bg-secondary text-secondary-foreground hover:bg-secondary/80;
+  }
+  
+  .btn-outline {
+    @apply border border-primary text-primary hover:bg-primary hover:text-primary-foreground dark:border-primary dark:text-primary;
+  }
+  
+  /* Card styles */
+  .card {
+    @apply bg-card rounded-xl shadow-card p-6 text-card-foreground;
+  }
+  
+  /* Form styles */
+  .form-input {
+    @apply w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-primary bg-background text-foreground border-input;
+  }
+}

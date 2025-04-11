@@ -1,0 +1,15 @@
+
+/* Navigation styles */
+@layer components {
+  .nav-link {
+    @apply px-4 py-2 rounded-md hover:bg-muted transition-colors text-foreground;
+  }
+  
+  .nav-link-active {
+    @apply bg-primary/10 dark:bg-primary/20 text-primary font-medium;
+  }
+  
+  .chat-message-input {
+    @apply fixed bottom-6 left-1/2 transform -translate-x-1/2 w-11/12 max-w-3xl z-10 flex items-center gap-2 p-2 rounded-full bg-card border border-border shadow-lg;
+  }
+}

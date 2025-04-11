@@ -19,9 +19,9 @@ const QuizCard: React.FC<QuizCardProps> = ({
   onClick,
 }) => {
   const difficultyColor = {
-    Easy: 'bg-green-100 text-green-600 dark:bg-green-900/30 dark:text-green-400',
-    Medium: 'bg-yellow-100 text-yellow-600 dark:bg-yellow-900/30 dark:text-yellow-400',
-    Hard: 'bg-red-100 text-red-600 dark:bg-red-900/30 dark:text-red-400',
+    Easy: 'bg-green-100 text-green-700 dark:bg-green-900/50 dark:text-green-300',
+    Medium: 'bg-yellow-100 text-yellow-700 dark:bg-yellow-900/50 dark:text-yellow-300',
+    Hard: 'bg-red-100 text-red-700 dark:bg-red-900/50 dark:text-red-300',
   };
 
   return (
